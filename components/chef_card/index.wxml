@@ -1,0 +1,33 @@
+
+<template name="chef_card">
+  <view class="weui-panel">
+    <view class="weui-panel__bd">
+      <navigator url="/pages/chef/index" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+          <image class="weui-media-box__thumb avatar" src="http://homeal.com.hk/img/sample/8/host8.png" />
+        </view>
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+          <view class="weui-media-box__title">小路私房菜</view>
+          <view class="weui-media-box__desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</view>
+        </view>
+      </navigator>
+
+      <view class="image-wrapper ">
+        <image class="dish-image " src="http://homeal.com.hk/img/sample/6/水煮牛肉.png"  ></image>
+        <image class="dish-image " src="http://homeal.com.hk/img/sample/6/水煮牛肉.png"  >{{image_index}}</image>
+        <image class="dish-image " src="http://homeal.com.hk/img/sample/6/水煮牛肉.png"  wx:for-item="imageItem" wx:for-index="image_index" mode="aspectFill" wx:key="{{image_index}} ">{{image_index}}</image>
+        <image class="dish-image " src="http://homeal.com.hk/img/sample/6/水煮牛肉.png"  wx:for-item="imageItem" wx:for-index="image_index" mode="aspectFill" wx:key="{{image_index}} ">{{image_index}}</image>
+      </view>
+
+      <view class="weui-media-box weui-media-box_text">
+
+        <view class="weui-media-box__desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</view>
+        <view class="weui-media-box__info">
+          <view class="weui-media-box__info__meta">文字来源</view>
+          <view class="weui-media-box__info__meta">时间</view>
+          <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">其它信息</view>
+        </view>
+      </view>
+  </view>
+</view>
+</template>

@@ -1,0 +1,43 @@
+{
+  "pages":[
+    "pages/home/index",
+    "pages/order/detail/index",
+    "pages/booking/submit/index",
+    "pages/order/index",
+    "pages/booking/date/index",
+    "pages/booking/index",
+    "pages/chef/index",
+    "pages/index/index",
+    "pages/logs/logs"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarTitleText": "首页",
+    "navigationBarBackgroundColor": "#E64340",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f7f9"
+  },
+  "tabBar": {
+    "selectedColor": "#495060",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页",
+        "iconPath": "/image/icon_home.png",
+        "selectedIconPath": "/image/icon_home_HL.png"
+      },
+      {
+        "pagePath": "pages/order/index",
+        "text": "订单",
+        "iconPath": "/image/icon_order.png",
+        "selectedIconPath": "/image/icon_order_HL.png"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  },
+  "debug": true
+}

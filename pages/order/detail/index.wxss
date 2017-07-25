@@ -1,0 +1,28 @@
+/* pages/order/detail/index.wxss */
+
+.avatar{
+  border-radius: 60px;
+}
+
+.order_msg {
+  padding: 10px 15px;
+  font-size: 16px;
+  text-align: left;
+  color: #999;
+}
+
+.order_label {
+  float: left;
+  margin-right: 1em;
+  min-width: 4em;
+  color: #999;
+}
+
+.order_value {
+  margin-left: 5em;
+  color: #999;
+}
+.price{
+  float: right;
+  font-size:14px;
+}

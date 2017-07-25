@@ -1,0 +1,34 @@
+.order-item{
+  position: relative
+}
+
+.state{
+  position: absolute;
+  top: 0;
+  right: 20rpx; 
+  color: rgb(255, 179, 0)
+}
+
+.order_msg {
+  padding: 10px 15px;
+  font-size: 0.9em;
+  text-align: left;
+  color: #999;
+  line-height: 2;
+}
+
+.order_label {
+  float: left;
+  margin-right: 1em;
+  min-width: 4em;
+  color: #999;
+}
+
+.order_value {
+  margin-left: 5em;
+  color: #999;
+}
+
+.primary_button{
+  color: #E64340;
+}

@@ -1,0 +1,28 @@
+/* pages/booking/index.wxss */
+.avatar{
+  border-radius: 60px;
+}
+
+.chef_name{
+  font-weight: 500
+}
+.price{
+  margin-top: 56rpx;
+  margin-bottom: 80rpx;
+}
+
+.menu-select{
+  padding-left: 15px;
+}
+
+.notice{
+  margin-bottom: 80rpx;
+}
+
+.submit-button{
+  width: 460rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  background-color: #E64340;
+  color: white;
+}

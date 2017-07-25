@@ -1,0 +1,30 @@
+<!--pages/home/index.wxml-->
+
+<import src="/components/chef_card/index.wxml" />
+
+<view class="weui-panel__hd header">
+  <view class="position">
+    <!-- <view class="position-icon"></view> -->
+    <view class="currentArea">汕头</view>
+  </view>
+  <view class="search">
+    <icon type="search" size="14" class="search-icon" />
+    <text class="search-text">搜索</text>
+  </view>
+</view>
+
+
+<view class="">
+  <swiper autoplay="true" class="banner" indicator-dots="true" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff">
+    <block wx:key="{{index}}">
+      <swiper-item>
+        <image src="http://homeal.com.hk/img/sample/6/木耳白肉.png" class="banner-image" mode="widthFix" />
+      </swiper-item>
+    </block>
+  </swiper>
+</view>
+
+<template is="chef_card" data="{{text: 'forbar'}}" />
+<template is="chef_card" data="{{text: 'forbar'}}" />
+<template is="chef_card" data="{{text: 'forbar'}}" />
+<template is="chef_card" data="{{text: 'forbar'}}" />

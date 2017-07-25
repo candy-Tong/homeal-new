@@ -1,0 +1,16 @@
+.avatar{
+  border-radius: 60px
+}
+.image-wrapper {
+  overflow: hidden;
+  padding: 3px 15px;
+}
+
+.dish-image {
+  float: left;
+  width: 330rpx;
+  height: 186rpx;
+  margin-bottom: 3px;
+  margin-right: 3px;
+  overflow: hidden;
+}

@@ -1,0 +1,64 @@
+/* pages/home/index.wxss */
+@import '/components/chef_card/index.wxss';
+
+.header{
+  overflow: hidden;
+  background-color: #E64340;
+}
+.header::after{
+  border-bottom: 0
+}
+
+ .position {
+  margin-right: 1em;
+  min-width: 4em;
+  color: #fff;
+
+}  
+
+.currentArea {
+  float: left;
+  text-align: center;
+  height: 54rpx;
+  font-size: 30rpx;
+  line-height: 54rpx;
+  margin-right: 18rpx;
+  color: rgba(255, 255, 255, 1);
+}
+
+.search {
+  position: relative;
+  margin-left: 4em;
+  background: white;
+  border-radius: 50rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+}
+
+.search-icon {
+  display: inline-block;
+  position: absolute;
+  top: 10rpx;
+  left: 24rpx;
+}
+.search-text{
+  display: inline-block;
+  position: absolute;
+  left: 60rpx;
+}
+
+.banner {
+  width: 750rpx;
+  height: 420rpx;
+}
+
+.banner-image {
+  width: 750rpx;
+}
+.content{
+  overflow: hidden
+}
+.weui-media-box::before{
+  border-top: 0
+}
+

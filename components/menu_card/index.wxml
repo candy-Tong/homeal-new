@@ -1,15 +1,16 @@
 <template name="menu_card">
-  <view class="weui-panel">
-    <view class="weui-panel__bd">
-      <view class="weui-media-box weui-media-box_text">
-        <view class="index-wrapper">
-          <view class="line"></view>
-          <view class="menu_index">套餐1</view>
-          <view class="line"></view>
-        </view>
-        <image class="menu_img" src="http://homeal.com.hk/img/sample/6/木耳白肉.png" mode="widthFit" style="height: 180px" />
-        <navigator url="/pages/booking/index" hover-class="navigator-hover">
+ <view bindtap="booking" hover-class="navigator-hover">
 
+    <view class="weui-panel">
+      <view class="weui-panel__bd">
+        <view class="weui-media-box weui-media-box_text">
+          <view class="index-wrapper">
+            <view class="line"></view>
+            <view class="menu_index">套餐1</view>
+            <view class="line"></view>
+          </view>
+          <image class="menu_img" src="http://homeal.com.hk/img/sample/6/木耳白肉.png" mode="widthFit" style="height: 180px" />
+        
           <view class="weui-media-box__title weui-media-box__title_in-text">标题一</view>
           <view class="weui-media-box__desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</view>
           <view class="weui-media-box__info">
@@ -17,8 +18,9 @@
             <view class="weui-media-box__info__meta">时间</view>
             <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">其它信息</view>
           </view>
-        </navigator>
+          
+        </view>
       </view>
-    </view>
-  </view> 
+    </view> 
+  </view>
 </template>

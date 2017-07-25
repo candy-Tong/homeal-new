@@ -1,4 +1,5 @@
 // pages/home/index.js
+var chef_card=require('../../components/chef_card/index.js')
 Page({
 
   /**
@@ -7,6 +8,8 @@ Page({
   data: {
   
   },
+
+  seeChef: chef_card.seeChef,
 
   /**
    * 生命周期函数--监听页面加载

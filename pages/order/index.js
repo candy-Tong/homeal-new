@@ -1,4 +1,6 @@
 // pages/order/index.js
+var order_card = require("../../components/order_card/index.js")
+
 Page({
 
   /**
@@ -17,6 +19,7 @@ Page({
     });
   },
 
+  seeOrder:order_card.seeOrder,
   /**
    * 生命周期函数--监听页面加载
    */

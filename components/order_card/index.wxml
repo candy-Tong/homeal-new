@@ -1,10 +1,10 @@
 <template name="order_card">
   <view class=" weui-form-preview">
-    <view class="weui-form-preview__hd">
+    <view bindtap="seeOrder" class="weui-form-preview__hd">
       <view class="weui-form-preview__label">小路私房菜</view>
       <view class="weui-form-preview__value_in-hd">¥2400.00</view>
     </view>
-    <navigator url="/pages/order/detail/index" class="order_msg">
+    <view bindtap="seeOrder" class="order_msg">
       <view class="order-item weui-form-preview__item">
         <view class="order_label">预约时间</view>
         <view class="order_value">10月1号 18:30PM</view>
@@ -22,7 +22,7 @@
         <view class="order_label">备注:</view>
         <view class="order_value">不要芹菜，喜欢清淡一点。不要芹菜，喜欢清淡一点。不要芹菜，喜欢清淡一点。不要芹菜，喜欢清淡一点。</view>
       </view>
-    </navigator>
+    </view>
 
 
     <view class="weui-form-preview__ft">
@@ -30,4 +30,4 @@
       <navigator class="weui-form-preview__btn primary_button" hover-class="weui-form-preview__btn_active">联系私厨</navigator>
     </view>
   </view>
-</template>
+</template> 

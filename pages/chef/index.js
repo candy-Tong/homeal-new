@@ -1,4 +1,7 @@
 // pages/chef/index.js
+
+var menu_card = require('../../components/menu_card/index.js')
+
 Page({
 
   /**
@@ -17,6 +20,7 @@ Page({
     });
   },
 
+  booking: menu_card.booking,
   /**
    * 生命周期函数--监听页面加载
    */

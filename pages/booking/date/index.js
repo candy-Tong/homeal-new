@@ -6,23 +6,41 @@ Page({
    */
   data: {
     radioItems: [
-      { name: '午餐', value: '0', instruction:"11:00-14:00"},
-      { name: '晚餐', value: '1', checked: true, instruction: "17:00-20:00" }
+      { name: '午餐', value: '0', instruction: "11:00-14:00" },
+      { name: '晚餐', value: '1', instruction: "17:00-20:00" }
     ],
-    date: "2016-09-01",
-    time: "12:01",
+    time: "12:00",
+    timeSelecor:{
+      "startTime": "11:00",
+      "endTime": "14:00"
+    },
+    checkedIndex: 0
+  },
+
+  // 根据午餐、晚餐设定时间选择范围
+  limitTimeSelector(index) {
+    var startTime, endTime
+    if (index == 0) {
+      startTime = "11:00"
+      endTime = "14:00"
+    } else if (index == 1) {
+      startTime = "17:00"
+      endTime = "20:00"
+    }
+    return{
+      "startTime": startTime,
+      "endTime": endTime
+    }
   },
 
   radioChange: function (e) {
     console.log('radio发生change事件，携带value值为：', e.detail.value);
-
-    var radioItems = this.data.radioItems;
-    for (var i = 0, len = radioItems.length; i < len; ++i) {
-      radioItems[i].checked = radioItems[i].value == e.detail.value;
-    }
-
+    var checkedIndex = e.detail.value
+    var timeSelecor=this.limitTimeSelector(checkedIndex)
     this.setData({
-      radioItems: radioItems
+      checkedIndex,
+      timeSelecor,
+      time: timeSelecor.startTime
     });
   },
   bindDateChange: function (e) {
@@ -36,9 +54,9 @@ Page({
     })
   },
 
-  finish(){
+  finish() {
     wx.navigateBack({
-      delta:1
+      delta: 1
     })
   },
 
@@ -46,7 +64,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+      var dateObject=new Date()
+      // 预约时间默认设置为后天
+      dateObject.setDate(dateObject.getDate() + 2);
+      var date = dateObject.getFullYear()+"-"+(dateObject.getMonth()+1)+"-"+dateObject.getDate()
+      this.setData({
+        date
+      })
   },
 
   /**

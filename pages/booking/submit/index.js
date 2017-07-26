@@ -24,7 +24,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+      var chef_id=opetions.chef_id
+      this.setData({
+        chef_id
+      })
   },
 
   /**

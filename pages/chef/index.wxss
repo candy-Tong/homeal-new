@@ -10,20 +10,6 @@
   width: 750rpx;
 }
 
-.avatar {
-  border-radius: 60px;
-}
-
-.desc {
-  color: #999;
-  font-size: 13px;
-  line-height: 1.2;
-}
-
-.label {
-  margin-top: 0;
-  margin-left: 90px;
-}
 
 .page__bd {
   height: 100%;
@@ -39,12 +25,12 @@
 }
 
 .weui-navbar__title {
-  color: #E64340;
+  color: #e64340;
 }
 
 .weui-navbar__slider {
   width: 250rpx;
-  background-color: #E64340;
+  background-color: #e64340;
 }
 
 .menu_img {
@@ -57,22 +43,48 @@
   -webkit-overflow-scrolling: touch;
 }
 
+.chef {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: top;
+  -webkit-align-items: top;
+  align-items: top;
+}
+
+.avatar {
+  border-radius: 60px;
+   margin-top:5px; 
+}
+
+.desc {
+  color: #999;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.label {
+  margin-top: 10px;
+}
+
 .icon {
-  position: absolute;
-  top: 20px;
-  right: 0;
+  float: right;
   margin-right: 15px;
+  margin-top: 5px;
   height: 17px;
   line-height: 17px;
+  align-content: center;
+  align-items: center;
 }
 
 .chat-icon, .favor-icon {
   float: right;
   margin-right: 7rpx;
 }
-.chat-text,.favor-text{
+
+.chat-text, .favor-text {
   float: right;
   margin-right: 28rpx;
   font-size: 14px;
-  color:#999;
+  color: #999;
 }

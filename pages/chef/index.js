@@ -8,10 +8,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-    tabs: ["选项一", "选项二", "选项三"],
+    tabs: ["套餐", "信息", "用户评价"],
     activeIndex: 0,
     sliderOffset: 0,
-    sliderLeft: 0
+    sliderLeft: 0,
+
   },
   tabClick: function (e) {
     this.setData({
@@ -25,15 +26,26 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var that = this;
+    var _this = this;
+    var chef_id=options.chef_id
     wx.getSystemInfo({
       success: function (res) {
-        that.setData({
+        _this.setData({
           sliderLeft: 0,
-          sliderOffset: res.windowWidth / that.data.tabs.length * that.data.activeIndex
+          sliderOffset: res.windowWidth / _this.data.tabs.length * _this.data.activeIndex
         });
       }
     });
+    wx.request({
+      url: 'http://homeal.com.hk/lrl/api/chef/' + chef_id,
+      success(res){
+        console.log(res)
+        _this.setData({
+          chef:res.data.result,
+          chef_id
+        })
+      }
+    })
   },
 
   /**

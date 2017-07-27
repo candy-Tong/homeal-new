@@ -9,12 +9,11 @@ Page({
       { name: '午餐', value: '0', instruction: "11:00-14:00" },
       { name: '晚餐', value: '1', instruction: "17:00-20:00" }
     ],
-    time: "12:00",
-    timeSelecor:{
+
+    timeSelecor: {
       "startTime": "11:00",
       "endTime": "14:00"
     },
-    checkedIndex: 0
   },
 
   // 根据午餐、晚餐设定时间选择范围
@@ -27,7 +26,7 @@ Page({
       startTime = "17:00"
       endTime = "20:00"
     }
-    return{
+    return {
       "startTime": startTime,
       "endTime": endTime
     }
@@ -36,25 +35,31 @@ Page({
   radioChange: function (e) {
     console.log('radio发生change事件，携带value值为：', e.detail.value);
     var checkedIndex = e.detail.value
-    var timeSelecor=this.limitTimeSelector(checkedIndex)
+    var timeSelecor = this.limitTimeSelector(checkedIndex)
     this.setData({
-      checkedIndex,
+      "time.checkedIndex": checkedIndex,
       timeSelecor,
-      time: timeSelecor.startTime
+      "time.time": timeSelecor.startTime
     });
   },
   bindDateChange: function (e) {
     this.setData({
-      date: e.detail.value
+      "time.date": e.detail.value
     })
   },
   bindTimeChange: function (e) {
     this.setData({
-      time: e.detail.value
+      "time.time": e.detail.value
     })
   },
 
   finish() {
+    var curaPages = getCurrentPages()
+    // console.log(curaPages[curaPages.length - 2])
+    var bookingPage = curaPages[curaPages.length - 2]
+    bookingPage.setData({
+      time: this.data.time
+    })
     wx.navigateBack({
       delta: 1
     })
@@ -64,13 +69,32 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-      var dateObject=new Date()
-      // 预约时间默认设置为后天
-      dateObject.setDate(dateObject.getDate() + 2);
-      var date = dateObject.getFullYear()+"-"+(dateObject.getMonth()+1)+"-"+dateObject.getDate()
-      this.setData({
-        date
-      })
+    console.log(options)
+    var time = JSON.parse(options.time)
+
+    var startDate = this.getDateStr(new Date())
+    var endDate = this.getDateStr(new Date(), 30)
+    //首次打开
+    if (time.date == "" && time.time == "") {
+      console.log("首次选择时间")
+      var curDate = this.getDateStr(new Date(), 2)
+      time = {
+        date: curDate,
+        time: "12:00",
+        checkedIndex:0
+      }
+    }
+    this.setData({
+      time,
+      startDate,
+      endDate
+    })
+
+  },
+  // 求相差 date days 天的日期字符串
+  getDateStr(date, days = 0) {
+    date.setDate(date.getDate() + days)
+    return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
   },
 
   /**
@@ -113,12 +137,12 @@ Page({
    */
   onReachBottom: function () {
 
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
   }
+
+  // /**
+  //  * 用户点击右上角分享
+  //  */
+  // onShareAppMessage: function () {
+
+  // }
 })

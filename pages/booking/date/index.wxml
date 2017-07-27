@@ -7,8 +7,8 @@
       <view class="weui-label">日期</view>
     </view>
     <view class="weui-cell__bd">
-      <picker mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">
-        <view class="weui-input">{{date}}</view>
+      <picker mode="date" value="{{time.date}}" start="{{startDate}}" end="{{endDate}}" bindchange="bindDateChange">
+        <view class="weui-input">{{time.date}}</view>
       </picker>
     </view>
   </view>
@@ -17,11 +17,11 @@
   <view class="lunch-type weui-cells weui-cells_after-title">
     <radio-group bindchange="radioChange">
       <label class="weui-cell weui-check__label" wx:for="{{radioItems}}" wx:key="value">
-        <radio class="weui-check" value="{{item.value}}" checked="{{checkedIndex==index}}"/>
+        <radio class="weui-check" value="{{item.value}}" checked="{{time.checkedIndex==index}}"/>
         <view class="weui-cell__bd">{{item.name}}
             <text class="instruction">{{item.instruction}}</text>
         </view>
-        <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{checkedIndex==index}}">
+        <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{time.checkedIndex==index}}">
             <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
         </view>
       </label>
@@ -33,8 +33,8 @@
       <view class="weui-label">时间</view>
     </view>
     <view class="weui-cell__bd">
-      <picker mode="time" value="{{time}}" start="{{timeSelecor.startTime}}" end="{{timeSelecor.endTime}}" bindchange="bindTimeChange">
-        <view class="weui-input">{{time}}</view>
+      <picker mode="time" value="{{time.time}}" start="{{timeSelecor.startTime}}" end="{{timeSelecor.endTime}}" bindchange="bindTimeChange">
+        <view class="weui-input">{{time.time}}</view>
       </picker>
     </view>
   </view>

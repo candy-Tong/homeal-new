@@ -1,24 +1,46 @@
 // pages/booking/index.js
+var app = getApp()
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    icon: {
-      menu: "/image/icon_menu.png",
-      people: "/image/icon_people.png",
-      date: "/image/icon_date.png"
+
+    // icon: {
+    //   menu: "/image/icon_menu.png",
+    //   people: "/image/icon_people.png",
+    //   date: "/image/icon_date.png"
+    // },
+    time: {
+      date: "",
+      time: ""
     },
-    date: "选择日期",
-    time:"",
+    phone: "",
+    booking_notice: "",
     peopleIndex: 0,
+
+  },
+  // 是否可以提交booking
+  canSubmit: true,
+
+  bindChooseDate(e) {
+    var time = JSON.stringify(this.data.time)
+    wx.navigateTo({
+      url: '/pages/booking/date/index?time=' + time
+    })
   },
 
   bindPhoneInput(e) {
     // console.log(e)
     this.setData({
       phone: e.detail.value
+    })
+  },
+  bindNoticeInput(e) {
+    // console.log(e.detail.value)
+    this.setData({
+      booking_notice: e.detail.value
     })
   },
 
@@ -48,13 +70,82 @@ Page({
   },
 
   orderSubmit() {
-    
-    var token
+    var _this = this
+    app.checkSession(function () {
+
+      wx.getSetting({
+        success: function(res) {
+          console.log(res)
+          // 未授权
+          if (res.authSetting["scope.userInfo"]==false){
+            // 待做登录跳转
+            wx.showModal({
+              content: '用户未登录',
+              showCancel: true
+
+              
+            });
+          }else{
+            _this.booking(_this)
+          }
+        },
+        fail: function(res) {},
+        complete: function(res) {},
+      })
+
+    })
+  },
+
+  booking(that){
+    var _this=that
+    // 防止多次提交
+    if (_this.canSubmit == false) {
+      console.log("阻止重复提交订单")
+      return
+    }
+    _this.canSubmit = false
+
+    var time = _this.data.time
+    if (time.date == "" && time.time == "") {
+      wx.showModal({
+        content: '请选择时间',
+        showCancel: false
+      });
+      return
+    } else {
+      var meal_time = time.date + " " + time.time + ":00"
+
+    }
+    if (_this.data.phone == "") {
+      wx.showModal({
+        content: '请填写手机号',
+        showCancel: false
+      });
+      return
+    } else {
+      var phone = _this.data.phone
+
+    }
+    var token = app.getToken()
+    var menus = {
+      menu_id: _this.data.menus[_this.data.menuIndex].menu_id,
+      people_no: _this.data.peopleSelector[_this.data.menuIndex][_this.data.peopleIndex]
+    }
+    var chef_id = _this.data.chef.chef_id
+    var booking_notice = _this.data.booking_notice
+
+    console.log("meal_time:" + meal_time)
+    console.log("phone:" + phone)
+    console.log("token:" + token)
+    console.log("chef_id:" + chef_id)
+    console.log(menus)
+    console.log("booking_notice:" + booking_notice)
+
     wx.request({
-      url: 'http://homeal.com.hk/lrl/api/booking_rest/booking',
+      url: 'http://homeal.com.hk/lrl/api/booking',
       method: 'POST',
       data: {
-        "phone": this.data.phone,
+        "phone": phone,
         "token": token,
         "chef_id": chef_id,
         "menus": menus,
@@ -65,17 +156,25 @@ Page({
         'content-type': 'application/json'
       },
       success(res) {
+        console.log(res)
+        if (res.data.is_error) {
+          if (res.data.error_msg == "phone is invalid") {
+            wx.showModal({
+              content: '手机号不合法',
+              showCancel: false
+            });
+          }
+          _this.canSubmit = true
+          console.log("允许提交订单")
+          return
+        }
 
         wx.redirectTo({
-          url: '/pages/booking/submit/index?chef_id=' + this.data.chef.chef_id
+          url: '/pages/booking/submit/index?order_no=' + res.data.result.order_no
         })
       }
     })
-
-
-
   },
-
 
   /**
    * 生命周期函数--监听页面加载

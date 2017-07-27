@@ -24,7 +24,6 @@
   </swiper>
 </view>
 
-<template is="chef_card" data="{{text: 'forbar'}}" />
-<template is="chef_card" data="{{text: 'forbar'}}" />
-<template is="chef_card" data="{{text: 'forbar'}}" />
-<template is="chef_card" data="{{text: 'forbar'}}" />
+<block wx:for="{{chef_cards}}" wx:key="{{index}}">
+  <template is="chef_card" data="{{...item}}" />
+</block>

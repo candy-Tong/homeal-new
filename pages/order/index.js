@@ -25,26 +25,26 @@ Page({
    */
   onLoad: function (options) {
     var _this = this
-    // 检查是否登录
-    wx.getSetting({
-      success: function (res) {
-        var isLogin
-        console.log(res)
-        // 登录未授权
-        if (res.authSetting["scope.userInfo"] == undefined || res.authSetting["scope.userInfo"] == false) {
-          isLogin = false
-        } else {
-          // 登录已授权
-          isLogin = true
+    var callback = [
+      {
+        func: function () {
+          _this.setData({
+            isLogin: true
+          })
         }
-        _this.setData({
-          isLogin
-        })
       },
-      fail: function (res) {
-        console.log("读取设置失败")
+      {
+        isError: true,
+        func: function () {
+          _this.setData({
+            isLogin: false
+          })
+        }
       }
-    })
+    ]
+    // 检查是否登录
+    app.checkUserInfoModule(callback)
+    
   },
 
   // 用户点击登陆
@@ -52,38 +52,46 @@ Page({
     var _this = this
     console.log(e)
     var userinfo = e.detail
-    if (userinfo.errMsg && userinfo.errMsg.indexOf('fail')>0) {
+    if (userinfo.errMsg && userinfo.errMsg.indexOf('fail') > 0) {
       console.log("无法获取用户userInfo")
-    } else if (userinfo.errMsg && userinfo.errMsg.indexOf('ok')>0) {
-      // app.login(function () {
-      //   _this.setData({
-      //     isLogin: true
-      //   })
-      // })
-    
-    // 按钮登录
+    } else if (userinfo.errMsg && userinfo.errMsg.indexOf('ok') > 0) {
+      // 配置回调函数
+      var callback = [
+        {
+          func: function () {
+            wx.hideLoading()
+            _this.setData({
+              isLogin: true
+            })
+          }
+        },
+        {
+          isError: true,
+          func: function () {
+            wx.hideLoading()
+            console.log("已授权登录却发生登录错误,可能是存储token出现问题")
+            _this.setData({
+              isLogin: false
+            })
+          }
+        }
+      ]
+      // 按钮登录
       wx.login({
         success: function (response) {
           var code = response.code
           if (code) {
-            wx.request({
-              url: 'http://homeal.com.hk/lrl/api/wechat/mini/user',
-              data: {
-                js_code: code,
-                iv: userinfo.iv,
-                encrypted_data: userinfo.encryptedData
-              },
-              success: function (res) {
-                console.log("登陆返回")
-                console.log(res.data)
-                //应该返回token
-                app.saveToken(res.data.result.token)
-
-                if (sucCallback) {
-                  sucCallback()
-                }
-              }
+            var login_info = {
+              code: code,
+              iv: userinfo.iv,
+              encrypted_data: userinfo.encryptedData
+            }
+            console.log(login_info)
+            wx.showLoading({
+              title: '登录中',
+              mask: true
             })
+            app.loginModule(login_info,callback)
           } else {
             console.log('获取用户登录态失败！' + res.errMsg)
           }
@@ -92,8 +100,8 @@ Page({
           console.log("login 失败")
         }
       })
-    }else{
-      console.log("bindgetuserinfo出现其他状况")
+    } else {
+      console.log("发生错误，bindgetuserinfo出现其他状况")
     }
   },
 

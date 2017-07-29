@@ -28,82 +28,72 @@ App({
     }
   },
 
-  // 验证原生登录是否过期
-  checkSession(sucCallback = null, failCallback = null) {
+  // 验证登录接口
+  checkLoginModule: function (AfterCallback) {
+    console.log('AfterCallback is ' + typeof AfterCallback)
+    console.log(AfterCallback)
+
+    this.checkSessionModule(AfterCallback)
+  },
+
+  checkSessionModule(AfterCallback) {
     var _this = this
-    console.log("检查登录有效期")
+    console.log("1.检查原生登录是否有效")
     wx.checkSession({
       success: function (res) {
         // 登录有效
-        console.log("原生登录有效，getUserInfo不一定成功")
-
-        // _this.login()
-
-        if (sucCallback) {
-          sucCallback()
+        console.log("1.原生登录有效，getUserInfo不一定成功")
+        if (AfterCallback) {
+          _this.checkUserInfoModule(AfterCallback)
+        } else {
+          _this.checkUserInfoModule()
         }
+
       },
       fail: function (res) {
-        // 登陆过期，调用login
-        console.log("登录过期")
-        _this.login(sucCallback, failCallback)
-      },
-      complete: function (res) { },
-    })
-  },
-
-  // 授权登录，用户拒绝后只能用按钮登录
-  login(sucCallback = null, failCallback = null) {
-    var _this = this
-    wx.login({
-      success: function (response) {
-        // console.log(response)
-        var code = response.code
-        if (code) {
-          wx.getUserInfo({
-            withCredentials: true,
-            success: function (resp) {
-              var login_info={
-                code:code,
-                iv: resp.iv,
-                encrypted_data: resp.encrypted_data
-              }
-              _this.login_request(login_info,sucCallback)
-            },
-            // 用户拒绝
-            fail() {
-              wx.showModal({
-                content: '用户未登录',
-                showCancel: true,
-                confirmColor: "#E64340",
-                success(res) {
-                  if (res.confirm == true) {
-                    wx.switchTab({
-                      url: '/pages/order/index',
-                    })
+        // 原生登陆过期，调用login
+        console.log("2.登录过期")
+        // 尝试授权登录
+        wx.login({
+          success: function (response) {
+            // console.log(response)
+            var code = response.code
+            if (code) {
+              wx.getUserInfo({
+                withCredentials: true,
+                success: function (resp) {
+                  console.log("2.getUserInfo success")
+                  var login_info = {
+                    code: code,
+                    iv: resp.iv,
+                    encrypted_data: resp.encrypted_data
+                  }
+                  _this.loginModule(login_info, AfterCallback)
+                },
+                // 用户拒绝
+                fail() {
+                  console.log("2.getUserInfo 失败,用户拒绝授权")
+                  if (AfterCallback) {
+                    _this.checkUserInfoModule(AfterCallback)
+                  } else {
+                    _this.checkUserInfoModule()
                   }
                 }
-              });
-              if (failCallback) {
-                failCallback()
-              }
-              console.log("getUserInfo 失败")
+              })
+            } else {
+              console.log('2.没有code，获取用户登录态失败！' + res.errMsg)
             }
-          })
-        } else {
-          console.log('获取用户登录态失败！' + res.errMsg)
-        }
-      },
-      fail: function () {
-        console.log("login 失败")
+          },
+          fail: function () {
+            console.log("2.login 失败")
+          }
+        })
       }
     })
   },
 
-  login_request(login_info,callback){
-    var _this=this
-    console.log(_this)
-    console.log(getApp())
+  loginModule(login_info, AfterCallback) {
+    var _this = this
     wx.request({
       url: 'http://homeal.com.hk/lrl/api/wechat/mini/user',
       data: {
@@ -112,72 +102,97 @@ App({
         encrypted_data: login_info.encryptedData
       },
       success: function (res) {
-        console.log("登陆返回")
+        console.log("2.登陆返回")
         console.log(res.data)
         //应该返回token
         try {
-          console.log("缓存token")
+          wx.setStorageSync('loginError', "")
+          console.log("2.缓存token")
           wx.setStorageSync('token', res.data.result.token)
         } catch (e) {
-          console.log("保存token错误")
+          console.log("2.保存token错误,登录失败")
           console.log(e)
+          // 登录服务器错误
+          wx.setStorageSync('loginError', "登录过程中服务器端出现错误")
         }
-        if (callback) {
-          callback()
+        if (AfterCallback) {
+          _this.checkUserInfoModule(AfterCallback)
+        } else {
+          _this.checkUserInfoModule()
         }
+
       }
     })
   },
 
-  // 验证是否已取得userInfo
-  checkUserInfo(callback = null) {
+  // 检查用户是否授权，不授权无法完整整个登录流程
+  checkUserInfoModule(AfterCallback) {
+    // 此步骤用于检查登录服务器是否出现错误
+    try {
+      var loginError = wx.getStorageSync('loginError')
+      console.log("loginError:" + loginError)
+    } catch (e) {
+      console.log("读取loginError信息错误")
+    }
+    var _this = this
     wx.getSetting({
       success: function (res) {
         console.log(res)
-        // if (res.errMsg=="getSetting:ok"){
-        //   if (callback) {
-        //     callback()
-        //   }
-        // }
         // 未授权
-        if (res.authSetting["scope.userInfo"] == undefined || res.authSetting["scope.userInfo"] == false) {
+        if (loginError!=""||res.authSetting["scope.userInfo"] == undefined || res.authSetting["scope.userInfo"] == false) {
+          console.log("3.登录验证失败，错误处理")
           wx.hideLoading()
-          wx.showModal({
-            content: '用户未登录',
-            showCancel: true,
-            confirmColor: "#E64340",
-            success(res) {
-              if (res.confirm == true) {
-                wx.switchTab({
-                  url: '/pages/order/index',
-                })
+          var pages = getCurrentPages()
+          var curPage = pages[pages.length - 1]
+          if (!_this.contains(_this.globalData.loginPage, curPage['__route__']))
+            wx.showModal({
+              content: '用户未登录',
+              showCancel: true,
+              confirmColor: "#E64340",
+              success(res) {
+                if (res.confirm == true) {
+                  wx.switchTab({
+                    url: '/pages/order/index',
+                  })
+                }
               }
-            }
-          });
-        } else {
-          if (callback) {
-            callback()
+            });
+          console.log("4.登录错误回调开始")
+          if (typeof AfterCallback == 'object') {
+            AfterCallback.forEach(function (item, index, object) {
+              if (item.isError && item.func) {
+                if (item.parm) {
+                  item.func(item.parm)
+                } else {
+                  item.func()
+                }
+              }
+            })
           }
-          console.log("other")
+        } else {
+          // 通过授权，登录完成，执行业务
+          console.log("3.登录验证成功")
+          console.log("4.执行业务")
+          if (typeof AfterCallback == 'object') {
+            AfterCallback.forEach(function (item, index, object) {
+              if (item.func && (item.isError == undefined || item.isError != true)) {
+                if (item.parm) {
+                  item.func(item.parm)
+                } else {
+                  item.func()
+                }
+              }
+            })
+          }
         }
       },
       fail: function (res) {
-        console.log("读取设置失败")
+        console.log("3.读取设置失败")
       }
     })
   },
 
-  saveToken(token) {
-    try {
-      console.log("缓存token")
-      wx.setStorageSync('token', token)
-    } catch (e) {
-      console.log("保存token错误")
-      console.log(e)
-    }
-  },
 
- 
   getToken() {
     try {
       var token = wx.getStorageSync('token')
@@ -195,7 +210,21 @@ App({
     return token
   },
 
+  contains: function (arr, obj) {
+    var i = arr.length;
+    while (i--) {
+      if (arr[i] === obj) {
+        return true;
+      }
+    }
+    return false;
+  },
+
   globalData: {
-    userInfo: null
+    userInfo: null,
+    // 配置登录页面，在此页面不再弹出登录跳转框
+    loginPage: [
+      "pages/order/index"
+    ]
   }
 })

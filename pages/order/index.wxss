@@ -31,4 +31,7 @@
   margin: 0 16px;
   -webkit-overflow-scrolling: touch;
 }
+.login_button{
+  width: 420rpx;
+}
 

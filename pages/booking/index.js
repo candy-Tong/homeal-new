@@ -69,41 +69,114 @@ Page({
     })
   },
 
-  orderSubmit() {
+  orderSubmit(e) {
     var _this = this
-    app.checkSession(function () {
 
-      wx.getSetting({
-        success: function(res) {
-          console.log(res)
-          // 未授权
-          if (res.authSetting["scope.userInfo"]==false){
-            // 待做登录跳转
-            wx.showModal({
-              content: '用户未登录',
-              showCancel: true
+    var form_id = e.detail.formId
+    console.log(form_id)
 
-              
-            });
-          }else{
-            _this.booking(_this)
-          }
-        },
-        fail: function(res) {},
-        complete: function(res) {},
-      })
-
+    wx.showLoading({
+      title: '提交中',
+      mask: true
     })
+    var _this = this
+    //检验原生登录
+    app.checkSession(
+      // 成功调用函数
+      function () {
+        // 检验本小程序登录
+        app.checkUserInfo(function () {
+          var time = _this.data.time
+          if (time.date == "" && time.time == "") {
+            wx.showModal({
+              content: '请选择时间',
+              showCancel: false
+            });
+            wx.hideLoading()
+            return
+          } else {
+            var meal_time = time.date + " " + time.time + ":00"
+          }
+          if (_this.data.phone == "") {
+            wx.showModal({
+              content: '请填写手机号',
+              showCancel: false
+            });
+            wx.hideLoading()
+            return
+          } else {
+            var phone = _this.data.phone
+
+          }
+          var token = app.getToken()
+          var menus = {
+            menu_id: _this.data.menus[_this.data.menuIndex].menu_id,
+            people_no: _this.data.peopleSelector[_this.data.menuIndex][_this.data.peopleIndex]
+          }
+          var chef_id = _this.data.chef.chef_id
+          var booking_notice = _this.data.booking_notice
+
+          console.log("meal_time:" + meal_time)
+          console.log("phone:" + phone)
+          console.log("token:" + token)
+          console.log("chef_id:" + chef_id)
+          console.log(menus)
+          console.log("booking_notice:" + booking_notice)
+
+          // console.log("测试退出")
+          // return
+
+          wx.request({
+            url: 'http://homeal.com.hk/lrl/api/booking',
+            method: 'POST',
+            data: {
+              "phone": phone,
+              "token": token,
+              "chef_id": chef_id,
+              "menus": [menus],
+              "meal_time": meal_time,
+              "booking_notice": booking_notice,
+              "is_mini": 1,
+              "form_id": form_id
+            },
+            header: {
+              'content-type': 'application/json'
+            },
+            success(res) {
+              wx.hideLoading()
+              _this.canSubmit = true
+              console.log(res)
+              if (res.data.is_error) {
+                if (res.data.error_msg == "phone is invalid") {
+                  wx.showModal({
+                    content: '手机号不合法',
+                    showCancel: false
+                  });
+                }
+                console.log("允许提交订单")
+                return
+              }
+
+              // wx.redirectTo({
+              //   url: '/pages/booking/submit/index?order_no=' + res.data.result.order_no
+              // })
+            },
+            fail(res) {
+              wx.hideLoading()
+              console.log("booking发送错误")
+              console.log(res)
+            }
+          })
+        })
+      },
+      // 登录失败时调用函数（用户拒绝)
+      function () {
+        wx.hideLoading()
+      })
   },
 
-  booking(that){
-    var _this=that
-    // 防止多次提交
-    if (_this.canSubmit == false) {
-      console.log("阻止重复提交订单")
-      return
-    }
-    _this.canSubmit = false
+  booking(that) {
+    var _this = that
 
     var time = _this.data.time
     if (time.date == "" && time.time == "") {
@@ -111,16 +184,17 @@ Page({
         content: '请选择时间',
         showCancel: false
       });
+      wx.hideLoading()
       return
     } else {
       var meal_time = time.date + " " + time.time + ":00"
-
     }
     if (_this.data.phone == "") {
       wx.showModal({
         content: '请填写手机号',
         showCancel: false
       });
+      wx.hideLoading()
       return
     } else {
       var phone = _this.data.phone
@@ -148,7 +222,7 @@ Page({
         "phone": phone,
         "token": token,
         "chef_id": chef_id,
-        "menus": menus,
+        "menus": [menus],
         "meal_time": meal_time,
         "booking_notice": booking_notice
       },
@@ -156,6 +230,8 @@ Page({
         'content-type': 'application/json'
       },
       success(res) {
+        wx.hideLoading()
+        _this.canSubmit = true
         console.log(res)
         if (res.data.is_error) {
           if (res.data.error_msg == "phone is invalid") {
@@ -164,7 +240,6 @@ Page({
               showCancel: false
             });
           }
-          _this.canSubmit = true
           console.log("允许提交订单")
           return
         }
@@ -172,6 +247,11 @@ Page({
         wx.redirectTo({
           url: '/pages/booking/submit/index?order_no=' + res.data.result.order_no
         })
+      },
+      fail(res) {
+        wx.hideLoading()
+        console.log("booking发送错误")
+        console.log(res)
       }
     })
   },

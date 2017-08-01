@@ -5,9 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    chef_avatar:'https://homeal.com.hk/img/sample/5/host5.png',
-    menu_img:'https://homeal.com.hk/img/sample/8/红蟹.png'
-  },
+    },
 
   open: function () {
     wx.showActionSheet({
@@ -24,7 +22,23 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    var _this=this
+    console.log(options.order)
+    var order = JSON.parse(options.order)
+    wx.request({
+      url: 'https://homeal.com.hk/lrl/api/chef/' + order.chef_id,
+      success(res) {
+        var chef = res.data.result
+        var menu=chef.menus.find(function(value){
+          return value.menu_id == order.menus[0].menu_id
+        })
+        _this.setData({
+          chef,
+          order,
+          menu
+        })
+      }
+    })
   },
 
   /**

@@ -1,3 +1,7 @@
+.order_card{
+  margin-bottom: 15px
+}
+
 .order-item{
   position: relative
 }

@@ -25,5 +25,5 @@
 </view>
 
 <block wx:for="{{chef_cards}}" wx:key="{{index}}">
-  <template is="chef_card" data="{{...item}}" />
+  <template is="chef_card" data="{{...item,card_index:index}}" />
 </block>

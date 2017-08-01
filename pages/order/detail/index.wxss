@@ -1,6 +1,10 @@
 /* pages/order/detail/index.wxss */
-
-.avatar{
+.avatar-wrapper{
+  height: 22px;
+}
+.chef_avatar {
+  width: 25px;
+  height: 25px;
   border-radius: 60px;
 }
 
@@ -22,7 +26,8 @@
   margin-left: 5em;
   color: #999;
 }
-.price{
+
+.price {
   float: right;
-  font-size:14px;
+  font-size: 14px;
 }

@@ -5,11 +5,11 @@
     <view class="weui-media-box weui-media-box_small-appmsg">
       <view class="weui-cells weui-cells_in-small-appmsg">
         <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-          <view class="weui-cell__hd">
-            <image src="{{chef_avatar}}" style="width: 20px;height: 20px;margin-right: 5px" />
+          <view class="avatar-wrapper">
+            <image  mode="aspectFill" class="chef_avatar" src="{{chef.chef_avatar_url}}" style="width: 22px;height: 22px;margin-right: 5px" mode="aspectFill"/>
           </view>
           <view class="weui-cell__bd weui-cell_primary">
-            <view>小路私房菜</view>
+            <view>{{chef.kitchen_name}}</view>
           </view>
         </navigator>
       </view>
@@ -19,14 +19,14 @@
   <view class="weui-panel__bd">
     <navigator url="" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
       <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-        <image class="weui-media-box__thumb" src="{{menu_img}}" />
+        <image mode="aspectFill" class="weui-media-box__thumb" src="{{menu.menu_photo_url}}" />
       </view>
       <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-        <view class="weui-media-box__title">套餐一
-          <view class="price">￥110</view>
+        <view class="weui-media-box__title">{{menu.menu_name}}
+          <view class="price">￥{{order.booking_total_price}}</view>
         </view>
 
-        <view class="weui-media-box__desc">此套餐全是本人拿手菜，广受好评，欢迎品尝哦！</view>
+        <view class="weui-media-box__desc">{{menu.menu_desc}}</view>
       </view>
     </navigator>
   </view>
@@ -44,32 +44,32 @@
 
     <view class="order-item weui-form-preview__item">
       <view class="order_label">预约时间</view>
-      <view class="order_value">10月1号 18:30PM</view>
+      <view class="order_value">{{order.meal_time}}</view>
     </view>
 
     <view class="weui-form-preview__item">
       <view class="order_label">客人:</view>
-      <view class="order_value">4位</view>
+      <view class="order_value">{{order.menus[0].people_no}}位</view>
     </view>
     <view class="order-item weui-form-preview__item">
       <view class="order_label">预留电话</view>
-      <view class="order_value">13106986333</view>
+      <view class="order_value">{{order.contact_phone}}</view>
     </view>
     <view class="weui-form-preview__item">
       <view class="order_label">备注:</view>
-      <view class="order_value">不要芹菜，喜欢清淡一点。不要芹菜，喜欢清淡一点。不要芹菜，喜欢清淡一点。不要芹菜，喜欢清淡一点。</view>
+      <view class="order_value">{{order.booking_notice}}</view>
     </view>
-    <view class="order-item weui-form-preview__item">
+    <!-- <view class="order-item weui-form-preview__item">
       <view class="order_label">家厨电话</view>
       <view class="order_value">13106986333</view>
     </view>
     <view class="order-item weui-form-preview__item">
       <view class="order_label">家厨地址</view>
       <view class="order_value">广东省汕头市金平区大学路243号 </view>
-    </view>
+    </view> -->
     <view class="order-item weui-form-preview__item">
       <view class="order_label">价格</view>
-      <view class="order_value">￥110</view>
+      <view class="order_value">￥{{order.booking_total_price}}</view>
     </view>
     <view class="order-item weui-form-preview__item">
       <view class="order_label">状态</view>
@@ -77,7 +77,7 @@
     </view>
     <view class="order-item weui-form-preview__item">
       <view class="order_label">下单时间</view>
-      <view class="order_value">10月1号 18:30PM</view>
+      <view class="order_value">{{order.booking_created_time}}</view>
     </view>
   </view>
 

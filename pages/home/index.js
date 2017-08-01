@@ -18,9 +18,11 @@ Page({
   // 查看图片
   previewImage: function (e) {
     console.log(e)
+    var imageUrl = e.currentTarget.dataset.url
+    var index = e.currentTarget.id
     wx.previewImage({
-      current: e.currentTarget.id, // 当前显示图片的http链接
-      urls: this.data.files // 需要预览的图片http链接列表
+      current: imageUrl, // 当前显示图片的http链接
+      urls: this.data.chef_cards[index].maingrid_photo_url // 需要预览的图片http链接列表
     })
   },
 

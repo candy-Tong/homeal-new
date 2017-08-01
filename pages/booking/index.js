@@ -84,7 +84,7 @@ Page({
           confirmColor: "#E64340",
           success(res) {
             if (res.confirm == true) {
-              wx.switchTab({
+              wx.navigateTo({
                 url: '/pages/me/bindphone/index',
               })
             }

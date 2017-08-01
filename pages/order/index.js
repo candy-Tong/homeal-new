@@ -7,10 +7,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-    tabs: ["选项一", "选项二", "选项三"],
+    tabs: ["待付款", "进行中", "历史订单"],
     activeIndex: 0,
     sliderOffset: 0,
-    sliderLeft: 0
+    sliderLeft: 0,
+    isLogin: true
   },
   tabClick: function (e) {
     this.setData({
@@ -28,13 +29,10 @@ Page({
     var callback = [
       {
         func: function () {
-          // 获取订单信息
-          // wx.request({
-          //   url: '',
-          // })
           _this.setData({
             isLogin: true
           })
+          _this.getOrder()
         }
       },
       {
@@ -48,7 +46,34 @@ Page({
     ]
     // 检查是否登录
     app.checkLogin(callback)
+  },
 
+  getOrder() {
+    var _this = this
+    wx.showLoading({
+      title: '加载中',
+    })
+    if (app.globalData.token) {
+      var token = app.globalData.token
+    } else {
+      // 如果全局变量没有加载完成，读取缓存中的token
+      var token = app.getToken()
+    }
+    // 查询订单
+    wx.request({
+      url: 'https://homeal.com.hk/lrl/api/booking',
+      header: {
+        token: token
+      },
+      success(res) {
+        console.log(res)
+        _this.setData({
+          order: res.data.result,
+          isLogin: true
+        })
+        wx.hideLoading()
+      }
+    })
   },
 
   // 用户点击登陆
@@ -67,9 +92,24 @@ Page({
             _this.setData({
               isLogin: true
             })
-            wx.navigateTo({
-              url: '/pages/me/bindphone/index',
-            })
+            if (app.globalData.is_phone_bound) {
+              // 已绑定手机
+              _this.getOrder()
+            } else {
+              // 未绑定手机
+              wx.showModal({
+                content: '未绑定手机，是否现在绑定',
+                showCancel: true,
+                confirmColor: "#E64340",
+                success(res) {
+                  if (res.confirm == true) {
+                    wx.navigateTo({
+                      url: '/pages/me/bindphone/index',
+                    })
+                  }
+                }
+              })
+            }
           }
         },
         {
@@ -84,7 +124,7 @@ Page({
         }
       ]
       app.first_login(e, callback)
-      
+
     } else {
       console.log("发生错误，bindgetuserinfo出现其他状况")
     }

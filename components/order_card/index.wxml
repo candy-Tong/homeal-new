@@ -1,33 +1,43 @@
 <template name="order_card">
-  <view class=" weui-form-preview">
-    <view bindtap="seeOrder" class="weui-form-preview__hd">
-      <view class="weui-form-preview__label">小路私房菜</view>
-      <view class="weui-form-preview__value_in-hd">¥2400.00</view>
+  <view class="order_card weui-form-preview">
+    <view id="{{index}}" bindtap="seeOrder" class="weui-form-preview__hd">
+      <view class="weui-form-preview__label">{{kitchen_name}}</view>
+      <view class="weui-form-preview__value_in-hd">¥{{booking_total_price}}</view>
     </view>
-    <view bindtap="seeOrder" class="order_msg">
+    <view id="{{index}}" bindtap="seeOrder" class="order_msg">
       <view class="order-item weui-form-preview__item">
         <view class="order_label">预约时间</view>
-        <view class="order_value">10月1号 18:30PM</view>
-        <view class="state">未接单</view>
+        <view class="order_value">{{meal_time}}</view>
+        <view class="state">
+            <text wx:if="{{booking_status==1}}">未接单</text>
+            <text wx:if="{{booking_status==3}}">已接单</text>
+        
+        </view>
       </view>
       <view class="weui-form-preview__item">
         <view class="order_label">套餐:</view>
-        <view class="order_value">套餐一</view>
+        <view class="order_value">{{menus[0].menu_name}}</view>
       </view>
       <view class="weui-form-preview__item">
         <view class="order_label">客人:</view>
-        <view class="order_value">4位</view>
+        <view class="order_value">{{menus[0].people_no}}</view>
       </view>
       <view class="weui-form-preview__item">
         <view class="order_label">备注:</view>
-        <view class="order_value">不要芹菜，喜欢清淡一点。不要芹菜，喜欢清淡一点。不要芹菜，喜欢清淡一点。不要芹菜，喜欢清淡一点。</view>
+        <view class="order_value">{{booking_notice?booking_notice:'无'}}</view>
       </view>
     </view>
 
 
     <view class="weui-form-preview__ft">
-      <navigator class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active">取消订单</navigator>
-      <navigator class="weui-form-preview__btn primary_button" hover-class="weui-form-preview__btn_active">联系私厨</navigator>
+      <block wx:if="{{booking_status==1}}">
+        <navigator class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active">取消订单</navigator>
+        <navigator class="weui-form-preview__btn primary_button" hover-class="weui-form-preview__btn_active">联系私厨</navigator>
+      </block>
+      <block wx:if="{{booking_status==3}}">
+        <navigator class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active">联系私厨</navigator>
+        <navigator class="weui-form-preview__btn primary_button" hover-class="weui-form-preview__btn_active">付款</navigator>
+      </block>
     </view>
   </view>
-</template> 
+</template>

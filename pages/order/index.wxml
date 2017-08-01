@@ -18,7 +18,11 @@
       <!-- 1st page -->
       <view class="" hidden="{{activeIndex != 0}}">
         <block wx:if="{{isLogin}}">
-          <template is="order_card"></template>
+          <block wx:for="{{order}}" wx:key="{{index}}">
+            <block wx:if="{{item.booking_status==1}}">
+              <template is="order_card" data="{{...item,index:index}}"></template>
+            </block>
+          </block>
         </block>
         <block wx:else>
           <view class="weui-tab__content">
@@ -36,7 +40,11 @@
 
       <view class="" hidden="{{activeIndex != 1}}">
         <block wx:if="{{isLogin}}">
-          选项二内容
+          <block wx:for="{{order}}" wx:key="{{index}}">
+            <block wx:if="{{item.booking_status==2}}">
+              <template is="order_card" data="{{...item,index:index}}"></template>
+            </block>
+          </block>
         </block>
         <block wx:else>
           <view class="weui-tab__content">
@@ -54,7 +62,11 @@
 
       <view class="" hidden="{{activeIndex != 2}}">
         <block wx:if="{{isLogin}}">
-          选项三内容
+          <block wx:for="{{order}}" wx:key="{{index}}">
+            <block wx:if="{{item.booking_status==4}}">
+              <template is="order_card" data="{{...item,index:index}}"></template>
+            </block>
+          </block>
         </block>
         <block wx:else>
           <view class="weui-tab__content">

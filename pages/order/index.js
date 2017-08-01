@@ -28,6 +28,10 @@ Page({
     var callback = [
       {
         func: function () {
+          // 获取订单信息
+          // wx.request({
+          //   url: '',
+          // })
           _this.setData({
             isLogin: true
           })
@@ -43,8 +47,8 @@ Page({
       }
     ]
     // 检查是否登录
-    app.checkUserInfoModule(callback)
-    
+    app.checkLogin(callback)
+
   },
 
   // 用户点击登陆
@@ -79,31 +83,8 @@ Page({
           }
         }
       ]
-      // 按钮登录
-      wx.login({
-        success: function (response) {
-          var code = response.code
-          if (code) {
-            var login_info = {
-              code: code,
-              iv: userinfo.iv,
-              encrypted_data: userinfo.encryptedData
-            }
-         
-            wx.showLoading({
-              title: '登录中',
-              mask: true
-            })
-            app.loginModule(login_info,callback)
-
-          } else {
-            console.log('获取用户登录态失败！' + res.errMsg)
-          }
-        },
-        fail: function () {
-          console.log("login 失败")
-        }
-      })
+      app.first_login(e, callback)
+      
     } else {
       console.log("发生错误，bindgetuserinfo出现其他状况")
     }

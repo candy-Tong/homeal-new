@@ -8,11 +8,21 @@ Page({
   data: {
 
   },
+
   pageSize: 2,
   // 预加载cache
   cache: {},
   curPage: 1,
   seeChef: chef_card.seeChef,
+
+  // 查看图片
+  previewImage: function (e) {
+    console.log(e)
+    wx.previewImage({
+      current: e.currentTarget.id, // 当前显示图片的http链接
+      urls: this.data.files // 需要预览的图片http链接列表
+    })
+  },
 
   /**
    * 生命周期函数--监听页面加载
@@ -92,6 +102,16 @@ Page({
     var _this = this
     this.curPage = 1
     wx.request({
+      url: 'https://homeal.com.hk/lrl/api/miscel/banner',
+      success(res) {
+        // console.log(res)
+        var banner = res.data.result
+        _this.setData({
+          banner: res.data.result
+        })
+      }
+    })
+    wx.request({
       url: 'https://homeal.com.hk/lrl/api/miscel/maingrid',
       data: {
         page: 1,
@@ -116,7 +136,7 @@ Page({
       }
     })
     this.curPage++
-    
+
   },
 
   /**
@@ -125,22 +145,27 @@ Page({
   onReachBottom: function () {
     var _this = this
     var chef_cards = this.data.chef_cards
-    chef_cards=chef_cards.concat(this.cache)
-    
-    this.setData({
-      chef_cards
-    })
-    wx.request({
-      url: 'https://homeal.com.hk/lrl/api/miscel/maingrid',
-      data: {
-        page: this.curPage,
-        count: this.pageSize
-      },
-      success(res) {
-        _this.cache = res.data.result
-      }
-    })
-    this.curPage++
+    if (chef_cards && this.cache) {
+      chef_cards = chef_cards.concat(this.cache)
+
+      this.setData({
+        chef_cards
+      })
+      wx.request({
+        url: 'https://homeal.com.hk/lrl/api/miscel/maingrid',
+        data: {
+          page: this.curPage,
+          count: this.pageSize
+        },
+        success(res) {
+          _this.cache = res.data.result
+        }
+      })
+      this.curPage++
+    } else {
+      console.log("页面未加载完毕")
+    }
+
   },
 
   /**

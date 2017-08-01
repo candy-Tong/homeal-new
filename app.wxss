@@ -16,7 +16,7 @@
   margin: 0 auto;
   width: 19px;
   height: 17px;
-  background-image: url("https://119.29.162.17/homeal/icon/chat_icon@2x.png.png");
+  background-image: url("http://119.29.162.17/homeal/icon/chat_icon@2x.png.png");
   background-repeat: no-repeat;
   background-size: 100%;
 }
@@ -35,7 +35,7 @@
   margin: 0 auto;
   width: 17px;
   height: 16px;
-  background-image: url("https://119.29.162.17/homeal/icon/favor_icon@2x.png.png");
+  background-image: url("http://119.29.162.17/homeal/icon/favor_icon@2x.png.png");
   background-repeat: no-repeat;
   background-size: 100%;
 }

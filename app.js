@@ -2,9 +2,8 @@
 
 App({
   onLaunch: function () {
-    console.log(this)
     var _this = this
-
+    this.autoLogin()
     //调用API从本地缓存中获取数据
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
@@ -28,199 +27,178 @@ App({
     }
   },
 
-  // 验证登录接口
-  checkLoginModule: function (AfterCallback) {
-    console.log('AfterCallback is ' + typeof AfterCallback)
-    console.log(AfterCallback)
+  autoLogin() {
+    var _this = this
+    // 异步登录
+    wx.getStorage({
+      key: 'isLogin',
+      success: function (res) {
+        var isLogin = res.data
+        if (isLogin) {
+          // Do something with return value
+          console.log("读取缓存，已登录")
+          wx.login({
+            success: function (res) {
+              if (res.code) {
+                //发起网络请求
+                wx.request({
+                  url: 'https://homeal.com.hk/lrl/api/wechat/mini/second',
+                  data: {
+                    js_code: res.code
+                  },
+                  success(res){
+                    console.log(res)
+                    _this.updateLoginMsg(res.data)
+                  }
+                })
+              } else {
+                console.log('获取用户登录态失败！' + res.errMsg)
+              }
+            }
 
-    this.checkSessionModule(AfterCallback)
+          })
+          _this.globalData.isLogin = true
+
+        } else {
+          console.log("未登录")
+        }
+      },
+      fail(res){
+        console.log("获取isLogin失败，未登录")
+        console.log(res)
+      }
+    })
   },
 
-  checkSessionModule(AfterCallback) {
+  first_login(e, callbackObject) {
     var _this = this
-    console.log("1.检查原生登录是否有效")
-    wx.checkSession({
-      success: function (res) {
-        // 登录有效
-        console.log("1.原生登录有效，getUserInfo不一定成功")
-        if (AfterCallback) {
-          _this.checkUserInfoModule(AfterCallback)
-        } else {
-          _this.checkUserInfoModule()
-        }
+    var userinfo = e.detail
+    wx.login({
+      success: function (response) {
+        var code = response.code
+        if (code) {
+          var login_info = {
+            code: code,
+            iv: userinfo.iv,
+            encrypted_data: userinfo.encryptedData
+          }
+          console.log(userinfo)
+          wx.showLoading({
+            title: '登录中',
+            mask: true
+          })
+          wx.request({
+            url: 'https://homeal.com.hk/lrl/api/wechat/mini/user',
+            data: {
+              js_code: login_info.code,
+              iv: login_info.iv,
+              encrypted_data: login_info.encrypted_data
+            },
+            success: function (res) {
+              console.log("2.登陆返回")
+              console.log(res.data)
 
-      },
-      fail: function (res) {
-        // 原生登陆过期，调用login
-        console.log("2.登录过期")
-        // 尝试授权登录
-        wx.login({
-          success: function (response) {
-            // console.log(response)
-            var code = response.code
-            if (code) {
-              wx.getUserInfo({
-                withCredentials: true,
-                success: function (resp) {
-                  console.log(resp)
-                  console.log("2.getUserInfo success")
-                  var login_info = {
-                    code: code,
-                    iv: resp.iv,
-                    encrypted_data: resp.encryptedData
-                  }
-                  _this.loginModule(login_info, AfterCallback)
-                },
-                // 用户拒绝
-                fail() {
-                  console.log("2.getUserInfo 失败,用户拒绝授权")
-                  if (AfterCallback) {
-                    _this.checkUserInfoModule(AfterCallback)
-                  } else {
-                    _this.checkUserInfoModule()
-                  }
-                }
-              })
-            } else {
-              console.log('2.没有code，获取用户登录态失败！' + res.errMsg)
+              //更新数据
+              _this.updateLoginMsg(res.data, callbackObject)
+
             }
-          },
-          fail: function () {
-            console.log("2.login 失败")
+          })
+
+        } else {
+          console.log('获取用户登录态失败！' + res.errMsg)
+        }
+      },
+      fail: function () {
+        console.log("login 失败")
+      }
+    })
+  },
+
+  updateLoginMsg(data, callBackObject) {
+    var isError = false
+    if (data.result && data.result.token) {
+      var token = data.result.token
+      console.log(token)
+      this.globalData.token = token
+    } else {
+      isError = true
+      console.log("发生错误，token不存在")
+    }
+
+    if (isError == false) {
+      try {
+        wx.setStorageSync('isLogin', true)
+        wx.setStorageSync('token', token)
+      } catch (e) {
+        console.log("缓存isLogin/token发生错误")
+      }
+      this.globalData.isLogin = true
+      this.globalData.is_phone_bound = data.result.is_phone_bound
+      console.log("登录回调开始")
+      if (typeof callBackObject == 'object') {
+        callBackObject.forEach(function (item, index, object) {
+          if (item.func && (item.isError == undefined || item.isError != true)) {
+            if (item.parm) {
+              item.func(item.parm)
+            } else {
+              item.func()
+            }
           }
         })
       }
-    })
+    } else if (isError == true) {
+      console.log("登录错误回调开始")
+      if (typeof callBackObject == 'object') {
+        callBackObject.forEach(function (item, index, object) {
+          if (item.isError && item.func) {
+            if (item.parm) {
+              item.func(item.parm)
+            } else {
+              item.func()
+            }
+          }
+        })
+      }
+    } else {
+      console.log("isError出现特殊情况，位置updateLoginMsg")
+    }
+
   },
 
-  loginModule(login_info, AfterCallback) {
-    var _this = this
-    console.log(login_info)
-    wx.request({
-      url: 'https://homeal.com.hk/lrl/api/wechat/mini/user',
-      data: {
-        js_code: login_info.code,
-        iv: login_info.iv,
-        encrypted_data: login_info.encrypted_data
-      },
-      success: function (res) {
-        console.log("2.登陆返回")
-        console.log(res.data)
-        //应该返回token
-        try {
-          wx.setStorageSync('loginError', "")
-          console.log("2.缓存token")
-          if (res.data.result.token) {
-            console.log("token" + res.data.result.token)
-            wx.setStorageSync('token', res.data.result.token)
+  checkLogin(callBackObject) {
+    var isLogin = this.globalData.isLogin
+    if (isLogin && isLogin == true) {
+      //已登录
+      console.log("已登录，回调开始")
+      if (typeof callBackObject == 'object') {
+        callBackObject.forEach(function (item, index, object) {
+          if (item.func && (item.isError == undefined || item.isError != true)) {
+            if (item.parm) {
+              item.func(item.parm)
+            } else {
+              item.func()
+            }
+          }
+        })
+      }
+
+    } else {
+      //未登录
+      console.log("未登录，错误处理回调开始")
+      callBackObject.forEach(function (item, index, object) {
+        if (item.isError && item.func) {
+          if (item.parm) {
+            item.func(item.parm)
           } else {
-            // 登录服务器错误
-            wx.setStorageSync('loginError', "登录过程中服务器端出现错误")
-          }
-
-
-          // 存储是否已绑定手机
-
-
-        } catch (e) {
-          console.log("2.保存token错误,登录失败")
-          console.log(e)
-          // 登录服务器错误
-          wx.setStorageSync('loginError', "登录过程中服务器端出现错误")
-        }
-        if (AfterCallback) {
-          _this.checkUserInfoModule(AfterCallback)
-        } else {
-          _this.checkUserInfoModule()
-        }
-
-      }
-    })
-  },
-
-  // 检查用户是否授权，不授权无法完整整个登录流程
-  checkUserInfoModule(AfterCallback) {
-    // 此步骤用于检查登录服务器是否出现错误
-    try {
-      var loginError = wx.getStorageSync('loginError')
-      console.log("loginError:" + loginError)
-    } catch (e) {
-      console.log("读取loginError信息错误")
-    }
-    var _this = this
-    wx.getSetting({
-      success: function (res) {
-        console.log(res)
-        // 未授权
-        if (loginError != "" || res.authSetting["scope.userInfo"] == undefined || res.authSetting["scope.userInfo"] == false) {
-          console.log("3.登录验证失败，错误处理")
-          wx.hideLoading()
-          var pages = getCurrentPages()
-          var curPage = pages[pages.length - 1]
-          if (!_this.contains(_this.globalData.loginPage, curPage['__route__']))
-            wx.showModal({
-              content: '用户未登录',
-              showCancel: true,
-              confirmColor: "#E64340",
-              success(res) {
-                if (res.confirm == true) {
-                  wx.switchTab({
-                    url: '/pages/order/index',
-                  })
-                }
-              }
-            });
-          console.log("4.登录错误回调开始")
-          if (typeof AfterCallback == 'object') {
-            AfterCallback.forEach(function (item, index, object) {
-              if (item.isError && item.func) {
-                if (item.parm) {
-                  item.func(item.parm)
-                } else {
-                  item.func()
-                }
-              }
-            })
-          }
-        } else {
-          // 通过授权，登录完成，执行业务
-          console.log("3.登录验证成功")
-          console.log("4.执行业务")
-          if (typeof AfterCallback == 'object') {
-            AfterCallback.forEach(function (item, index, object) {
-              if (item.func && (item.isError == undefined || item.isError != true)) {
-                if (item.parm) {
-                  item.func(item.parm)
-                } else {
-                  item.func()
-                }
-              }
-            })
+            item.func()
           }
         }
-      },
-      fail: function (res) {
-        console.log("3.读取设置失败")
-      }
-    })
-  },
-
-  // 检查微信是否绑定手机
-  checkBindPhone(){
-    try {
-      var value = wx.getStorageSync('key')
-      if (value) {
-        // Do something with return value
-        return value
-      }else{
-        console.log("发生错误，位置手机绑定状态") 
-      }
-    } catch (e) {
-      // Do something when catch error
+      })
     }
   },
 
 
+// 很可能会放弃使用
   getToken() {
     try {
       var token = wx.getStorageSync('token')
@@ -249,10 +227,6 @@ App({
   },
 
   globalData: {
-    userInfo: null,
-    // 配置登录页面，在此页面不再弹出登录跳转框
-    loginPage: [
-      "pages/order/index"
-    ]
+    userInfo: null
   }
 })

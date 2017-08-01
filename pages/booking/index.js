@@ -70,126 +70,51 @@ Page({
   },
 
   orderSubmit(e) {
+    // var _this = this
+    if (app.globalData.isLogin == true) {
+      // 已登录
+      if (app.globalData.is_phone_bound==true){
+        // 已绑定手机
+        this.booking(e)
+      }else{
+        // 未绑定手机，无法下单，询问是否跳转绑定手机
+        wx.showModal({
+          content: '未绑定手机，不能下单',
+          showCancel: true,
+          confirmColor: "#E64340",
+          success(res) {
+            if (res.confirm == true) {
+              wx.switchTab({
+                url: '/pages/me/bindphone/index',
+              })
+            }
+          }
+        })
+      }
+     
+    } else {
+      // 未登录
+      wx.showModal({
+        content: '用户未登录',
+        showCancel: true,
+        confirmColor: "#E64340",
+        success(res) {
+          if (res.confirm == true) {
+            wx.switchTab({
+              url: '/pages/order/index',
+            })
+          }
+        }
+      })
+    }
+    
+  },
+  booking(e) {
     var _this = this
     wx.showLoading({
       title: '提交中',
       mask: true
     })
-
-    var callback = [{
-      func: function () {
-        var time = _this.data.time
-        if (time.date == "" && time.time == "") {
-          wx.showModal({
-            content: '请选择时间',
-            showCancel: false
-          });
-          wx.hideLoading()
-          return
-        } else {
-          var meal_time = time.date + " " + time.time + ":00"
-        }
-        if (_this.data.phone == "") {
-          wx.showModal({
-            content: '请填写手机号',
-            showCancel: false
-          });
-          wx.hideLoading()
-          return
-        } else {
-          var phone = _this.data.phone
-
-        }
-        if (_this.data.phone.length != 10 && _this.data.phone.length != 11) {
-          wx.showModal({
-            content: '请填写正确手机号',
-            showCancel: false
-          });
-          wx.hideLoading()
-          return
-        }
-
-        var form_id = e.detail.formId
-       
-        var token = app.getToken()
-        var menus = {
-          menu_id: _this.data.menus[_this.data.menuIndex].menu_id,
-          people_no: _this.data.peopleSelector[_this.data.menuIndex][_this.data.peopleIndex]
-        }
-        var chef_id = _this.data.chef.chef_id
-        var booking_notice = _this.data.booking_notice
-
-        console.log("form_id:",form_id)
-        console.log("meal_time:" + meal_time)
-        console.log("phone:" + phone)
-        console.log("token:" + token)
-        console.log("chef_id:" + chef_id)
-        console.log(menus)
-        console.log("booking_notice:" + booking_notice)
-
-        wx.request({
-          url: 'https://homeal.com.hk/lrl/api/booking',
-          method: 'POST',
-          data: {
-            "phone": phone,
-            "token": token,
-            "chef_id": chef_id,
-            "menus": [menus],
-            "meal_time": meal_time,
-            "booking_notice": booking_notice,
-            "is_mini": 1,
-            "form_id": form_id
-          },
-          header: {
-            'content-type': 'application/json'
-          },
-          success(res) {
-            wx.hideLoading()
-            _this.canSubmit = true
-            console.log(res)
-            if(res.data.result){
-
-            }else{
-              console.log("订单提交出现错误")
-            }
-            if (res.data.is_error) {
-              if (res.data.error_msg == "phone is invalid") {
-                wx.showModal({
-                  content: '手机号不合法',
-                  showCancel: false
-                });
-              }
-              console.log("允许提交订单")
-              return
-            }
-
-            // wx.redirectTo({
-            //   url: '/pages/booking/submit/index?order_no=' + res.data.result.order_no
-            // })
-          },
-          fail(res) {
-            wx.hideLoading()
-            console.log("booking发送错误")
-            console.log(res)
-          }
-        })
-      }
-    }, {
-      isError: true,
-      func: function () {
-        wx.hideLoading()
-        console.log("错误处理，隐藏loading")
-      }
-    }]
-    app.checkLoginModule(callback)
-
-
-    
-  },
-
-  booking(that) {
-    var _this = that
-
     var time = _this.data.time
     if (time.date == "" && time.time == "") {
       wx.showModal({
@@ -212,7 +137,18 @@ Page({
       var phone = _this.data.phone
 
     }
-    var token = app.getToken()
+    if (_this.data.phone.length != 10 && _this.data.phone.length != 11) {
+      wx.showModal({
+        content: '请填写正确手机号',
+        showCancel: false
+      });
+      wx.hideLoading()
+      return
+    }
+
+    var form_id = e.detail.formId
+
+    var token = app.globalData.token
     var menus = {
       menu_id: _this.data.menus[_this.data.menuIndex].menu_id,
       people_no: _this.data.peopleSelector[_this.data.menuIndex][_this.data.peopleIndex]
@@ -220,6 +156,7 @@ Page({
     var chef_id = _this.data.chef.chef_id
     var booking_notice = _this.data.booking_notice
 
+    console.log("form_id:", form_id)
     console.log("meal_time:" + meal_time)
     console.log("phone:" + phone)
     console.log("token:" + token)
@@ -236,7 +173,9 @@ Page({
         "chef_id": chef_id,
         "menus": [menus],
         "meal_time": meal_time,
-        "booking_notice": booking_notice
+        "booking_notice": booking_notice,
+        "is_mini": 1,
+        "form_id": form_id
       },
       header: {
         'content-type': 'application/json'
@@ -245,6 +184,11 @@ Page({
         wx.hideLoading()
         _this.canSubmit = true
         console.log(res)
+        if (res.data.result) {
+
+        } else {
+          console.log("订单提交出现错误")
+        }
         if (res.data.is_error) {
           if (res.data.error_msg == "phone is invalid") {
             wx.showModal({
@@ -256,9 +200,9 @@ Page({
           return
         }
 
-        wx.redirectTo({
-          url: '/pages/booking/submit/index?order_no=' + res.data.result.order_no
-        })
+        // wx.redirectTo({
+        //   url: '/pages/booking/submit/index?order_no=' + res.data.result.order_no
+        // })
       },
       fail(res) {
         wx.hideLoading()

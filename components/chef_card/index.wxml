@@ -12,10 +12,10 @@
       </view>
 
       <view class="image-wrapper ">
-        <image class="dish-image " src="{{maingrid_photo_url_1}}"  ></image>
-        <image class="dish-image " src="{{maingrid_photo_url_2}}"  >{{image_index}}</image>
-        <image class="dish-image " src="{{maingrid_photo_url_3}}"  wx:for-item="imageItem" wx:for-index="image_index" mode="aspectFill" wx:key="{{image_index}} ">{{image_index}}</image>
-        <image class="dish-image " src="{{maingrid_photo_url_4}}"  wx:for-item="imageItem" wx:for-index="image_index" mode="aspectFill" wx:key="{{image_index}} ">{{image_index}}</image>
+        <image catchtap="previewImage" data-url="{{maingrid_photo_url_1}}" class="dish-image " src="{{maingrid_photo_url_1}}"  ></image>
+        <image catchtap="previewImage" data-url="{{maingrid_photo_url_2}}" class="dish-image " src="{{maingrid_photo_url_2}}"  >{{image_index}}</image>
+        <image catchtap="previewImage" data-url="{{maingrid_photo_url_3}}" class="dish-image " src="{{maingrid_photo_url_3}}"  wx:for-item="imageItem" wx:for-index="image_index" mode="aspectFill" wx:key="{{image_index}} ">{{image_index}}</image>
+        <image catchtap="previewImage" data-url="{{maingrid_photo_url_4}}" class="dish-image " src="{{maingrid_photo_url_4}}"  wx:for-item="imageItem" wx:for-index="image_index" mode="aspectFill" wx:key="{{image_index}} ">{{image_index}}</image>
       </view>
 
       <view class="weui-media-box weui-media-box_text">

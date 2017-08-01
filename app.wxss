@@ -16,7 +16,7 @@
   margin: 0 auto;
   width: 19px;
   height: 17px;
-  background-image: url("http://119.29.162.17/homeal/icon/chat_icon@2x.png.png");
+  background-image: url("https://119.29.162.17/homeal/icon/chat_icon@2x.png.png");
   background-repeat: no-repeat;
   background-size: 100%;
 }
@@ -26,7 +26,7 @@
        screen and (min-device-pixel-ratio: 3.0),
        screen and (min-resolution: 3.0dppx) {
   .chat-icon {
-    background-image: url("http://119.29.162.17/homeal/icon/chat_icon@3x.png.png");
+    background-image: url("https://119.29.162.17/homeal/icon/chat_icon@3x.png.png");
   }
 }
 
@@ -35,7 +35,7 @@
   margin: 0 auto;
   width: 17px;
   height: 16px;
-  background-image: url("http://119.29.162.17/homeal/icon/favor_icon@2x.png.png");
+  background-image: url("https://119.29.162.17/homeal/icon/favor_icon@2x.png.png");
   background-repeat: no-repeat;
   background-size: 100%;
 }
@@ -45,6 +45,6 @@
        screen and (min-device-pixel-ratio: 3.0),
        screen and (min-resolution: 3.0dppx) {
   .favor-icon {
-    background-image: url("http://119.29.162.17/homeal/icon/favor_icon@3x.png.png");
+    background-image: url("https://119.29.162.17/homeal/icon/favor_icon@3x.png.png");
   }
 }

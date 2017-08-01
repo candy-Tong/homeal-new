@@ -63,6 +63,9 @@ Page({
             _this.setData({
               isLogin: true
             })
+            wx.navigateTo({
+              url: '/pages/me/bindphone/index',
+            })
           }
         },
         {
@@ -86,12 +89,13 @@ Page({
               iv: userinfo.iv,
               encrypted_data: userinfo.encryptedData
             }
-            console.log(login_info)
+         
             wx.showLoading({
               title: '登录中',
               mask: true
             })
             app.loginModule(login_info,callback)
+
           } else {
             console.log('获取用户登录态失败！' + res.errMsg)
           }

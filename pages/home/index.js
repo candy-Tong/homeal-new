@@ -21,7 +21,7 @@ Page({
     var _this = this
 
     wx.request({
-      url: 'http://homeal.com.hk/lrl/api/miscel/banner',
+      url: 'https://homeal.com.hk/lrl/api/miscel/banner',
       success(res) {
         // console.log(res)
         var banner = res.data.result
@@ -31,7 +31,7 @@ Page({
       }
     })
     wx.request({
-      url: 'http://homeal.com.hk/lrl/api/miscel/maingrid',
+      url: 'https://homeal.com.hk/lrl/api/miscel/maingrid',
       data: {
         page: 1,
         count: this.pageSize
@@ -44,7 +44,7 @@ Page({
     })
     this.curPage++
     wx.request({
-      url: 'http://homeal.com.hk/lrl/api/miscel/maingrid',
+      url: 'https://homeal.com.hk/lrl/api/miscel/maingrid',
       data: {
         page: this.curPage,
         count: this.pageSize
@@ -92,7 +92,7 @@ Page({
     var _this = this
     this.curPage = 1
     wx.request({
-      url: 'http://homeal.com.hk/lrl/api/miscel/maingrid',
+      url: 'https://homeal.com.hk/lrl/api/miscel/maingrid',
       data: {
         page: 1,
         count: this.pageSize
@@ -106,7 +106,7 @@ Page({
     })
     this.curPage++
     wx.request({
-      url: 'http://homeal.com.hk/lrl/api/miscel/maingrid',
+      url: 'https://homeal.com.hk/lrl/api/miscel/maingrid',
       data: {
         page: this.curPage,
         count: this.pageSize
@@ -131,7 +131,7 @@ Page({
       chef_cards
     })
     wx.request({
-      url: 'http://homeal.com.hk/lrl/api/miscel/maingrid',
+      url: 'https://homeal.com.hk/lrl/api/miscel/maingrid',
       data: {
         page: this.curPage,
         count: this.pageSize

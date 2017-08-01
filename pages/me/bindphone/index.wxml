@@ -1,0 +1,25 @@
+<!--pages/me/bindphone/index.wxml-->
+<view class="weui-cells weui-cells_after-title">
+  <view class="weui-cell weui-cell_input weui-cell_vcode">
+    <view class="weui-cell__hd">
+      <view class="weui-label">手机号</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input bindinput="bindPhoneInput" type="number" class="weui-input" placeholder="请输入手机号" />
+    </view>
+    <view class="weui-cell__ft">
+      <view  bindtap="bindGetCode" class="get_code_button weui-vcode-btn">{{getCode}}</view>
+    </view>
+  </view>
+  <view class="weui-cell weui-cell_input weui-cell_vcode">
+    <view class="weui-cell__hd">
+      <view class="weui-label">验证码</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input bindinput="bindCodeInput" type="number" class="weui-input" placeholder="请输入验证码" />
+    </view>
+  </view>
+</view>
+<view class="weui-tab__content">
+  <button  bindtap="bindPhone" hover-class="bind_phone_button_hover" class="bind_phone_button ">登录</button>
+</view>

@@ -4,7 +4,7 @@
   <view class="weui-panel__bd">
     <view class="weui-media-box weui-media-box_appmsg">
       <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-        <image class="avatar weui-media-box__thumb" src="http://homeal.com.hk/img/sample/5/host5.png" />
+        <image class="avatar weui-media-box__thumb" src="https://homeal.com.hk/img/sample/5/host5.png" />
       </view>
       <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
         <view class="chef_name weui-media-box__title">小路私房菜</view>
@@ -55,7 +55,7 @@
         <view class="weui-label">手机:</view>
       </view>
       <view class="weui-cell__bd weui-cell__ft">
-        <input bindblur="bindPhoneInput" class="weui-input" placeholder="请输入手机号" />
+        <input  type="number" bindblur="bindPhoneInput" class="weui-input" placeholder="请输入手机号" />
       </view>
     </view>
   </view>

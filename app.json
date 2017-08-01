@@ -1,6 +1,7 @@
 {
   "pages":[
     "pages/home/index",
+    "pages/me/bindphone/index",
     "pages/order/detail/index",
     "pages/booking/submit/index",
     "pages/order/index",

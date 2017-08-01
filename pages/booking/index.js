@@ -100,6 +100,15 @@ Page({
           var phone = _this.data.phone
 
         }
+        if (_this.data.phone.length != 10 && _this.data.phone.length != 11) {
+          wx.showModal({
+            content: '请填写正确手机号',
+            showCancel: false
+          });
+          wx.hideLoading()
+          return
+        }
+
         var form_id = e.detail.formId
        
         var token = app.getToken()
@@ -119,7 +128,7 @@ Page({
         console.log("booking_notice:" + booking_notice)
 
         wx.request({
-          url: 'http://homeal.com.hk/lrl/api/booking',
+          url: 'https://homeal.com.hk/lrl/api/booking',
           method: 'POST',
           data: {
             "phone": phone,
@@ -219,7 +228,7 @@ Page({
     console.log("booking_notice:" + booking_notice)
 
     wx.request({
-      url: 'http://homeal.com.hk/lrl/api/booking',
+      url: 'https://homeal.com.hk/lrl/api/booking',
       method: 'POST',
       data: {
         "phone": phone,

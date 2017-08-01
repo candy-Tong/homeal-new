@@ -37,7 +37,7 @@ Page({
       }
     });
     wx.request({
-      url: 'http://homeal.com.hk/lrl/api/chef/' + chef_id,
+      url: 'https://homeal.com.hk/lrl/api/chef/' + chef_id,
       success(res){
         console.log(res)
         _this.setData({

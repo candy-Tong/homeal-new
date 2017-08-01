@@ -62,11 +62,12 @@ App({
               wx.getUserInfo({
                 withCredentials: true,
                 success: function (resp) {
+                  console.log(resp)
                   console.log("2.getUserInfo success")
                   var login_info = {
                     code: code,
                     iv: resp.iv,
-                    encrypted_data: resp.encrypted_data
+                    encrypted_data: resp.encryptedData
                   }
                   _this.loginModule(login_info, AfterCallback)
                 },
@@ -94,12 +95,13 @@ App({
 
   loginModule(login_info, AfterCallback) {
     var _this = this
+    console.log(login_info)
     wx.request({
-      url: 'http://homeal.com.hk/lrl/api/wechat/mini/user',
+      url: 'https://homeal.com.hk/lrl/api/wechat/mini/user',
       data: {
         js_code: login_info.code,
         iv: login_info.iv,
-        encrypted_data: login_info.encryptedData
+        encrypted_data: login_info.encrypted_data
       },
       success: function (res) {
         console.log("2.登陆返回")
@@ -108,7 +110,18 @@ App({
         try {
           wx.setStorageSync('loginError', "")
           console.log("2.缓存token")
-          wx.setStorageSync('token', res.data.result.token)
+          if (res.data.result.token) {
+            console.log("token" + res.data.result.token)
+            wx.setStorageSync('token', res.data.result.token)
+          } else {
+            // 登录服务器错误
+            wx.setStorageSync('loginError', "登录过程中服务器端出现错误")
+          }
+
+
+          // 存储是否已绑定手机
+
+
         } catch (e) {
           console.log("2.保存token错误,登录失败")
           console.log(e)
@@ -139,7 +152,7 @@ App({
       success: function (res) {
         console.log(res)
         // 未授权
-        if (loginError!=""||res.authSetting["scope.userInfo"] == undefined || res.authSetting["scope.userInfo"] == false) {
+        if (loginError != "" || res.authSetting["scope.userInfo"] == undefined || res.authSetting["scope.userInfo"] == false) {
           console.log("3.登录验证失败，错误处理")
           wx.hideLoading()
           var pages = getCurrentPages()
@@ -190,6 +203,21 @@ App({
         console.log("3.读取设置失败")
       }
     })
+  },
+
+  // 检查微信是否绑定手机
+  checkBindPhone(){
+    try {
+      var value = wx.getStorageSync('key')
+      if (value) {
+        // Do something with return value
+        return value
+      }else{
+        console.log("发生错误，位置手机绑定状态") 
+      }
+    } catch (e) {
+      // Do something when catch error
+    }
   },
 
 

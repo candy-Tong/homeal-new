@@ -5,8 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    chef_avatar:'http://homeal.com.hk/img/sample/5/host5.png',
-    menu_img:'http://homeal.com.hk/img/sample/8/红蟹.png'
+    chef_avatar:'https://homeal.com.hk/img/sample/5/host5.png',
+    menu_img:'https://homeal.com.hk/img/sample/8/红蟹.png'
   },
 
   open: function () {

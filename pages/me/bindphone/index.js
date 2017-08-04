@@ -15,6 +15,7 @@ Page({
 
     if (this.data.getCode == '获取验证码' || this.data.getCode == '重新获取') {
       console.log(this.phone)
+
       if (this.phone.length == 10 || this.phone.length == 11) {
         var time = 10
         var _this = this
@@ -47,7 +48,10 @@ Page({
           },
           success(res) {
             _this.submitPhone = phone
-            console.log(res)
+            // console.log(res)
+            _this.setData({
+              code: res.data.result
+            })
           }
         })
       } else {
@@ -66,26 +70,42 @@ Page({
     console.log(phone)
     console.log(smscode)
     console.log(token)
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
     wx.request({
       url: 'https://homeal.com.hk/lrl/api/bind/phone',
       header: {
         "Content-Type": "application/x-www-form-urlencoded"
       },
-      method:"POST",
+      method: "POST",
       data: {
         "phone": phone,
         "token": token,
         "smscode": smscode
       },
       success(res) {
+        wx.hideLoading()
         console.log(res)
+        if (res.data.error_code == "h0008") {
+          wx.showModal({
+            content: '验证码错误',
+            showCancel: false
+          });
+          return
+        }
         //该手机已经被使用
-        if(res.data.error_code="h0001"){
+        if (res.data.error_code == "h0001") {
           wx.showModal({
             content: '该手机已经被使用，请联系管理员或更换绑定手机',
             showCancel: false
           });
-        }else{
+          return
+        }
+        if (res.data.is_error == false) {
+          app.globalData.token = res.data.result
+          app.globalData.is_phone_bound = true
           try {
             wx.setStorageSync('bindPhone', true)
             wx.showToast({
@@ -94,12 +114,17 @@ Page({
               duration: 2000
             })
             wx.navigateBack({
-              delta:1
+              delta: 1
             })
           } catch (e) {
             console.log("存储bindPhone出现问题")
           }
         }
+
+
+      },
+      fail(res) {
+        wx.hideLoading()
       }
     })
   },
@@ -118,7 +143,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    // test
+    if (app.globalData.isLogin) {
+      // 已登录
+      wx.showModal({
+        content: '已绑定过手机，绑定后的界面没做',
+        showCancel: false
+      });
+    }
   },
 
   /**

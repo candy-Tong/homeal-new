@@ -9,9 +9,14 @@ Page({
   },
 
   seeOrder() {
-    wx.redirectTo({
-      url: '/pages/order/detail/index'
-    })
+    if (this.order_id){
+      wx.redirectTo({
+        url: '/pages/order/detail/index?order_id=' + this.order_id
+      })
+    }else{
+      console.log(获取order_id失败)
+    }
+    
   },
   back() {
     wx.navigateBack({
@@ -24,10 +29,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-      // var order_id=opetions.order_id
-      // this.setData({
-      //   order_id
-      // })
+
+    this.order_id = options.order_id
   },
 
   /**

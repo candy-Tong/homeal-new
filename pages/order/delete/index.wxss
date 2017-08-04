@@ -1,0 +1,10 @@
+/* pages/order/delete/index.wxss */
+
+.tips{
+  background-color: #f8f8f9;
+  padding:15px 15px;
+}
+.login_button{
+  width: 420rpx;
+}
+

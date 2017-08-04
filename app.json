@@ -1,6 +1,8 @@
 {
   "pages":[
     "pages/home/index",
+    "pages/me/index",
+    "pages/order/delete/index",
     "pages/me/bindphone/index",
     "pages/order/detail/index",
     "pages/booking/submit/index",
@@ -33,6 +35,12 @@
         "text": "订单",
         "iconPath": "/image/icon_order.png",
         "selectedIconPath": "/image/icon_order_HL.png"
+      },
+      {
+        "pagePath": "pages/me/index",
+        "text": "我的",
+        "iconPath": "/image/icon_me.png",
+        "selectedIconPath": "/image/icon_me.png"
       }
     ]
   },

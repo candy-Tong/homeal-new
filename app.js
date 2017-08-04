@@ -19,7 +19,6 @@ App({
       wx.getUserInfo({
         withCredentials: true,
         success: function (res) {
-          console.log(res)
           that.globalData.userInfo = res.userInfo
           typeof cb == "function" && cb(that.globalData.userInfo)
         }
@@ -101,6 +100,20 @@ App({
               //更新数据
               _this.updateLoginMsg(res.data, callbackObject)
 
+            },fail(res){
+              console.log(res)
+              console.log("登录错误,可能是服务器没有回应，或者超时")
+              if (typeof callBackObject == 'object') {
+                callBackObject.forEach(function (item, index, object) {
+                  if (item.isError && item.func) {
+                    if (item.parm) {
+                      item.func(item.parm)
+                    } else {
+                      item.func()
+                    }
+                  }
+                })
+              }
             }
           })
 
@@ -132,6 +145,7 @@ App({
       } catch (e) {
         console.log("缓存isLogin/token发生错误")
       }
+      this.globalData.reflashLogin=true
       this.globalData.isLogin = true
       this.globalData.is_phone_bound = data.result.is_phone_bound
       console.log("登录回调开始")
@@ -198,7 +212,7 @@ App({
   },
 
 
-// 很可能会放弃使用
+// 很可能会放弃使用，但目前很多还是依赖这个
   getToken() {
     try {
       var token = wx.getStorageSync('token')
@@ -227,6 +241,8 @@ App({
   },
 
   globalData: {
-    userInfo: null
+    userInfo: null,
+    reflashOrder:false,
+    reflashLogin:false
   }
 })

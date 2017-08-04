@@ -1,0 +1,25 @@
+<!--pages/order/delete/index.wxml-->
+
+<view class="page__bd">
+  <view class="weui-article">
+    <view class="tips">
+      <view class="weui-article__h3">温馨提示</view>
+      <view class="tips-line">1.订单一旦取消，无法恢复</view>
+      <view class="tips-line">2.巴拉巴拉巴拉</view>
+      <view class="tips-line">3.巴拉巴拉巴拉</view>
+    </view>
+  </view>
+</view>
+
+<view class="weui-cells__title">填写原因</view>
+<view class="weui-cells weui-cells_after-title">
+  <view class="weui-cell">
+    <view class="weui-cell__bd">
+      <textarea bindinput="getReason" class="weui-textarea" placeholder="请输入取消原因" style="height: 3.3em" />
+      <view class="weui-textarea-counter">{{reasonLength}}/50</view>
+    </view>
+  </view>
+</view>
+
+<button bindtap="deleteOrder" type="warn" class="weui-btn login_button">取消订单</button>
+         

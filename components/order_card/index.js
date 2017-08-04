@@ -4,7 +4,7 @@ function seeOrder(e){
   var order = this.data.order[index]
   console.log(order)
   wx.navigateTo({
-    url: '/pages/order/detail/index?order='+JSON.stringify(order)
+    url: '/pages/order/detail/index?order_id='+order.booking_id
   });
 }
 

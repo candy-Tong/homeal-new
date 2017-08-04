@@ -1,36 +1,36 @@
 <!--pages/order/detail/index.wxml-->
 
-<view class="weui-panel">
-  <view class="weui-panel__bd">
+<view  class="weui-panel">
+  <view id="{{order.chef_id}}" bindtap="goChef" class="weui-panel__bd">
     <view class="weui-media-box weui-media-box_small-appmsg">
       <view class="weui-cells weui-cells_in-small-appmsg">
-        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view  url="{{'/pages/chef/index?chef_id='+order.chef_id}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
           <view class="avatar-wrapper">
-            <image  mode="aspectFill" class="chef_avatar" src="{{chef.chef_avatar_url}}" style="width: 22px;height: 22px;margin-right: 5px" mode="aspectFill"/>
+            <image  mode="aspectFill" class="chef_avatar" src="{{order.chef_avatar_url}}" style="width: 22px;height: 22px;margin-right: 5px" mode="aspectFill"/>
           </view>
           <view class="weui-cell__bd weui-cell_primary">
-            <view>{{chef.kitchen_name}}</view>
+            <view>{{order.kitchen_name}}</view>
           </view>
-        </navigator>
+        </view >
       </view>
     </view>
   </view>
 
-  <view class="weui-panel__bd">
-    <navigator url="" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+  <view  class="weui-panel__bd">
+    <view  class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
       <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-        <image mode="aspectFill" class="weui-media-box__thumb" src="{{menu.menu_photo_url}}" />
+        <image mode="aspectFill" class="weui-media-box__thumb" src="{{order.menus[0].menu_photo_url}}" />
       </view>
       <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-        <view class="weui-media-box__title">{{menu.menu_name}}
+        <view class="weui-media-box__title">{{order.menus[0].menu_name}}
           <view class="price">￥{{order.booking_total_price}}</view>
         </view>
 
-        <view class="weui-media-box__desc">{{menu.menu_desc}}</view>
+        <view class="weui-media-box__desc">{{order.menus[0].menu_desc}}</view>
       </view>
-    </navigator>
+    </view >
   </view>
-  <view class="weui-panel__ft">
+  <view id="{{order.chef_id}}" bindtap="goChef"  class="weui-panel__ft">
     <view class="weui-cell weui-cell_access weui-cell_link">
       <view class="weui-cell__bd">查看详情</view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>

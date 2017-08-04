@@ -21,5 +21,6 @@
   </view>
 </view>
 <view class="weui-tab__content">
-  <button  bindtap="bindPhone" hover-class="bind_phone_button_hover" class="bind_phone_button ">登录</button>
+  <button  bindtap="bindPhone" hover-class="bind_phone_button_hover" class="bind_phone_button ">确定</button>
 </view>
+{{code}}

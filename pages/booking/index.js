@@ -200,9 +200,9 @@ Page({
           return
         }
 
-        // wx.redirectTo({
-        //   url: '/pages/booking/submit/index?order_no=' + res.data.result.order_no
-        // })
+        wx.redirectTo({
+          url: '/pages/booking/submit/index?order_id=' + res.data.result.order_no
+        })
       },
       fail(res) {
         wx.hideLoading()

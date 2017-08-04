@@ -66,6 +66,12 @@ Page({
       }
     })
     this.curPage++
+
+    // test
+    wx.showModal({
+      content: '后边的的chef没有图片是因为这个chef本来就没有图片，不是显示问题',
+      showCancel: false
+    });
   },
 
 
@@ -135,6 +141,10 @@ Page({
       },
       success(res) {
         _this.cache = res.data.result
+      }, 
+      fail(res) {
+        _this.cache = []
+        console.log("加载新的chef_card失败")
       }
     })
     this.curPage++
@@ -149,6 +159,7 @@ Page({
     var chef_cards = this.data.chef_cards
     if (chef_cards && this.cache) {
       chef_cards = chef_cards.concat(this.cache)
+      this.cache=[]
 
       this.setData({
         chef_cards
@@ -161,6 +172,10 @@ Page({
         },
         success(res) {
           _this.cache = res.data.result
+        },
+        fail(res) {
+          _this.cache = []
+          console.log("加载新的chef_card失败")
         }
       })
       this.curPage++

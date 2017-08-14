@@ -3,9 +3,9 @@
 
 <view class="">
   <swiper autoplay="true" class="banner" indicator-dots="true" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff">
-    <block wx:key="{{index}}">
+    <block wx:for="{{chef.kitchen_photo_urls}}" wx:key="{{index}}">
       <swiper-item>
-        <image src="https://homeal.com.hk/img/sample/6/木耳白肉.png" class="banner-image" mode="widthFix" />
+        <image src="{{item}}" class="banner-image" mode="widthFix" />
       </swiper-item>
     </block>
   </swiper>

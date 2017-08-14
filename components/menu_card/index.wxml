@@ -9,8 +9,8 @@
             <view class="menu_index">套餐{{index+1}}</view>
             <view class="line"></view>
           </view>
-          <image class="menu_img" src="{{menu_photo_url}}" mode="widthFit" style="height: 180px" />
-        
+          <image id="{{index}}" data-url="{{main_menu_photo_url}}" catchtap="previewMenuPhoto" class="menu_img" src="{{main_menu_photo_url}}" mode="aspectFill" style="height: 180px" />
+          <!-- <text class="image_index">1/{{menu_photo_urls.length}}</text> -->
           <view class="weui-media-box__title weui-media-box__title_in-text">{{menu_name}}</view>
           <view class="weui-media-box__desc">{{menu_desc}}</view>
           <view class="weui-media-box__info">

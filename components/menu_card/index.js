@@ -8,4 +8,7 @@ function booking(e) {
     complete: function (res) { },
   })
 }
+
+
+
 module.exports.booking = booking

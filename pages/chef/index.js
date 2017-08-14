@@ -20,6 +20,15 @@ Page({
       activeIndex: e.currentTarget.id
     });
   },
+  previewMenuPhoto(e) {
+    console.log(e)
+    var imageUrl = e.currentTarget.dataset.url
+    var index = e.currentTarget.id
+    wx.previewImage({
+      current: imageUrl, // 当前显示图片的http链接
+      urls: this.data.chef.menus[index].menu_photo_urls // 需要预览的图片http链接列表
+    })
+  },
 
   booking: menu_card.booking,
   /**
@@ -27,7 +36,7 @@ Page({
    */
   onLoad: function (options) {
     var _this = this;
-    var chef_id=options.chef_id
+    var chef_id = options.chef_id
     wx.getSystemInfo({
       success: function (res) {
         _this.setData({
@@ -38,10 +47,10 @@ Page({
     });
     wx.request({
       url: 'https://homeal.com.hk/lrl/api/chef/' + chef_id,
-      success(res){
+      success(res) {
         console.log(res)
         _this.setData({
-          chef:res.data.result,
+          chef: res.data.result,
           chef_id
         })
       }

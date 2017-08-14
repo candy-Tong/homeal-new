@@ -6,7 +6,6 @@ Page({
    * 页面的初始数据
    */
   data: {
-    motto: 'Hello World',
     userInfo: {}
   },
 
@@ -72,11 +71,6 @@ Page({
    */
   onLoad: function (options) {
 
-    // test
-    wx.showModal({
-      content: '此界面只完成我的订单，部分完成绑定手机',
-      showCancel: false
-    });
  
     var _this = this
     var callback = [

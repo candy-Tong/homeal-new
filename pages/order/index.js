@@ -20,8 +20,8 @@ Page({
     });
   },
 
-  deleteOrder(e){
-    
+  deleteOrder(e) {
+
   },
 
   seeOrder: order_card.seeOrder,
@@ -51,11 +51,7 @@ Page({
     // 检查是否登录
     app.checkLogin(callback)
 
-    // test
-    wx.showModal({
-      content: '此界面只能查询订单和取消订单，付款没有完成',
-      showCancel: false
-    });
+
   },
 
   getOrder() {
@@ -151,37 +147,37 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if(app.globalData.refalshLogin){
+    if (app.globalData.refalshLogin) {
       // 在其他页面登录，需要刷新界面
       _this.setData({
         isLogin: true
       })
       _this.getOrder()
     }
-    if (app.globalData.reflashOrder){
-      var _this = this
-      var callback = [
-        {
-          func: function () {
-            _this.setData({
-              isLogin: true
-            })
-            _this.getOrder()
-            app.globalData.reflashOrder=false
-          }
-        },
-        {
-          isError: true,
-          func: function () {
-            _this.setData({
-              isLogin: false
-            })
-          }
+
+    var _this = this
+    var callback = [
+      {
+        func: function () {
+          _this.setData({
+            isLogin: true
+          })
+          _this.getOrder()
+          app.globalData.reflashOrder = false
         }
-      ]
-      // 检查是否登录
-      app.checkLogin(callback)
-    }
+      },
+      {
+        isError: true,
+        func: function () {
+          _this.setData({
+            isLogin: false
+          })
+        }
+      }
+    ]
+    // 检查是否登录
+    app.checkLogin(callback)
+
   },
 
   /**

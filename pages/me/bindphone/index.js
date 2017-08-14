@@ -48,7 +48,7 @@ Page({
           },
           success(res) {
             _this.submitPhone = phone
-            // console.log(res)
+            console.log(res)
             _this.setData({
               code: res.data.result
             })
@@ -144,7 +144,7 @@ Page({
    */
   onLoad: function (options) {
     // test
-    if (app.globalData.isLogin) {
+    if (app.globalData.is_phone_bound) {
       // 已登录
       wx.showModal({
         content: '已绑定过手机，绑定后的界面没做',

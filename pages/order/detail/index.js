@@ -49,7 +49,7 @@ Page({
     var order_id = options.order_id
     var token = app.globalData.token
     wx.request({
-      url: 'https://homeal.com.hk/lrl/api/booking/' + order_id,
+      url: app.globalData.baseurl +'booking/' + order_id,
       header: {
         token: token
       },

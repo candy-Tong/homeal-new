@@ -8,6 +8,8 @@ App({
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
+
+    
   },
 
   getUserInfo: function (cb) {
@@ -41,7 +43,7 @@ App({
               if (res.code) {
                 //发起网络请求
                 wx.request({
-                  url: 'https://homeal.com.hk/lrl/api/wechat/mini/second',
+                  url: _this.globalData.baseurl+'wechat/mini/second',
                   data: {
                     js_code: res.code
                   },
@@ -87,7 +89,7 @@ App({
             mask: true
           })
           wx.request({
-            url: 'https://homeal.com.hk/lrl/api/wechat/mini/user',
+            url: _this.globalData.baseurl+'wechat/mini/user',
             data: {
               js_code: login_info.code,
               iv: login_info.iv,
@@ -241,6 +243,8 @@ App({
   },
 
   globalData: {
+    baseurl:'http://39.108.117.116/api/',
+    // staticResUrl:"http://119.29.162.17/homeal/icon/",
     userInfo: null,
     reflashOrder:false,
     reflashLogin:false

@@ -41,7 +41,7 @@ Page({
         console.log(token)
         console.log(phone)
         wx.request({
-          url: 'https://homeal.com.hk/lrl/api/bind/smscode',
+          url: app.globalData.baseurl +'bind/smscode',
           header: {
             phone: phone,
             token: token
@@ -75,7 +75,7 @@ Page({
       mask: true
     })
     wx.request({
-      url: 'https://homeal.com.hk/lrl/api/bind/phone',
+      url: app.globalData.baseurl +'bind/phone',
       header: {
         "Content-Type": "application/x-www-form-urlencoded"
       },

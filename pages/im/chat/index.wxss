@@ -1,0 +1,12 @@
+/* pages/chat/index.wxss */
+
+.avatar {
+  border-radius: 60px;
+}
+
+.chat-desc {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 350rpx;
+}

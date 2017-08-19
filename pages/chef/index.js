@@ -1,5 +1,5 @@
 // pages/chef/index.js
-
+var app=getApp()
 var menu_card = require('../../components/menu_card/index.js')
 
 Page({
@@ -46,7 +46,7 @@ Page({
       }
     });
     wx.request({
-      url: 'https://homeal.com.hk/lrl/api/chef/' + chef_id,
+      url: app.globalData.baseurl +'chef/' + chef_id,
       success(res) {
         console.log(res)
         _this.setData({
@@ -85,19 +85,19 @@ Page({
 
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
+  // /**
+  //  * 页面相关事件处理函数--监听用户下拉动作
+  //  */
+  // onPullDownRefresh: function () {
 
-  },
+  // },
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
+  // /**
+  //  * 页面上拉触底事件的处理函数
+  //  */
+  // onReachBottom: function () {
 
-  },
+  // },
 
   /**
    * 用户点击右上角分享

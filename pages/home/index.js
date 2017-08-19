@@ -1,4 +1,5 @@
 // pages/home/index.js
+var app=getApp()
 var chef_card = require('../../components/chef_card/index.js')
 Page({
 
@@ -36,7 +37,7 @@ Page({
     var _this = this
 
     wx.request({
-      url: 'https://homeal.com.hk/lrl/api/miscel/banner',
+      url: app.globalData.baseurl +'miscel/banner',
       success(res) {
         // console.log(res)
         var banner = res.data.result
@@ -47,7 +48,7 @@ Page({
     })
     _this.cacheLock = true
     wx.request({
-      url: 'https://homeal.com.hk/lrl/api/miscel/maingrid',
+      url: app.globalData.baseurl +'miscel/maingrid',
       data: {
         page: 1,
         count: this.pageSize
@@ -59,7 +60,7 @@ Page({
         // 预加载
         _this.curPage++
         wx.request({
-          url: 'https://homeal.com.hk/lrl/api/miscel/maingrid',
+          url: app.globalData.baseurl +'miscel/maingrid',
           data: {
             page: _this.curPage,
             count: _this.pageSize
@@ -118,7 +119,7 @@ Page({
     var _this = this
     this.curPage = 1
     wx.request({
-      url: 'https://homeal.com.hk/lrl/api/miscel/banner',
+      url: app.globalData.baseurl +'miscel/banner',
       success(res) {
         // console.log(res)
         var banner = res.data.result
@@ -129,7 +130,7 @@ Page({
     })
     _this.cacheLock = true
     wx.request({
-      url: 'https://homeal.com.hk/lrl/api/miscel/maingrid',
+      url: app.globalData.baseurl +'miscel/maingrid',
       data: {
         page: 1,
         count: this.pageSize
@@ -143,7 +144,7 @@ Page({
     })
     this.curPage++
     wx.request({
-      url: 'https://homeal.com.hk/lrl/api/miscel/maingrid',
+      url: app.globalData.baseurl +'miscel/maingrid',
       data: {
         page: this.curPage,
         count: this.pageSize
@@ -185,7 +186,7 @@ Page({
       }
       _this.cacheLock = true
       wx.request({
-        url: 'https://homeal.com.hk/lrl/api/miscel/maingrid',
+        url: app.globalData.baseurl +'miscel/maingrid',
         data: {
           page: this.curPage,
           count: this.pageSize

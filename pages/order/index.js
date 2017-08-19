@@ -67,7 +67,7 @@ Page({
     }
     // 查询订单
     wx.request({
-      url: 'https://homeal.com.hk/lrl/api/booking',
+      url: app.globalData.baseurl + 'booking',
       header: {
         token: token
       },

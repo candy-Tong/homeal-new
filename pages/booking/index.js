@@ -165,7 +165,7 @@ Page({
     console.log("booking_notice:" + booking_notice)
 
     wx.request({
-      url: 'https://homeal.com.hk/lrl/api/booking',
+      url: app.globalData.baseurl+'booking',
       method: 'POST',
       data: {
         "phone": phone,

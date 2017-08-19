@@ -33,7 +33,7 @@ Page({
       title: '加载中',
     })
     wx.request({
-      url: 'https://homeal.com.hk/lrl/api/booking/' + order_id + "?reason=" + reason,
+      url: app.globalData.baseurl +'booking/' + order_id + "?reason=" + reason,
       header: {
         token: token
       },

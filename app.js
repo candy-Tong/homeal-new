@@ -1,4 +1,6 @@
 //app.js
+require('./utils/strophe.js')
+var WebIM = require('./utils/WebIM.js').default
 
 App({
   onLaunch: function () {
@@ -9,7 +11,269 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
 
-    
+    // 接入环信demo
+    WebIM.conn.listen({
+      onOpened: function (message) {
+        WebIM.conn.setPresence()
+      },
+      onPresence: function (message) {
+        switch (message.type) {
+          case "unsubscribe":
+            pages[0].moveFriend(message);
+            break;
+          case "subscribe":
+            if (message.status === '[resp:true]') {
+              return
+            } else {
+              pages[0].handleFriendMsg(message)
+            }
+            break;
+          case "joinChatRoomSuccess":
+            wx.showToast({
+              title: "JoinChatRoomSuccess",
+            });
+            break;
+          case "memberJoinChatRoomSuccess":
+            wx.showToast({
+              title: "memberJoinChatRoomSuccess",
+            });
+            break;
+        }
+      },
+      onRoster: function (message) {
+        var pages = getCurrentPages()
+        if (pages[0]) {
+          pages[0].onShow()
+        }
+      },
+
+      onVideoMessage: function (message) {
+        console.log('onVideoMessage: ', message);
+        var page = that.getRoomPage()
+        if (message) {
+          if (page) {
+            page.receiveVideo(message, 'video')
+          } else {
+            var chatMsg = that.globalData.chatMsg || []
+            var time = WebIM.time()
+            var msgData = {
+              info: {
+                from: message.from,
+                to: message.to
+              },
+              username: message.from,
+              yourname: message.from,
+              msg: {
+                type: 'video',
+                data: message.url
+              },
+              style: '',
+              time: time,
+              mid: 'video' + message.id
+            }
+            msgData.style = ''
+            chatMsg = wx.getStorageSync(msgData.yourname + message.to) || []
+            chatMsg.push(msgData)
+            wx.setStorage({
+              key: msgData.yourname + message.to,
+              data: chatMsg,
+              success: function () {
+                //console.log('success')
+              }
+            })
+          }
+        }
+      },
+
+      onAudioMessage: function (message) {
+        console.log('onAudioMessage', message)
+        var page = that.getRoomPage()
+        console.log(page)
+        if (message) {
+          if (page) {
+            page.receiveMsg(message, 'audio')
+          } else {
+            var chatMsg = that.globalData.chatMsg || []
+            var value = WebIM.parseEmoji(message.data.replace(/\n/mg, ''))
+            var time = WebIM.time()
+            var msgData = {
+              info: {
+                from: message.from,
+                to: message.to
+              },
+              username: message.from,
+              yourname: message.from,
+              msg: {
+                type: 'audio',
+                data: value
+              },
+              style: '',
+              time: time,
+              mid: 'audio' + message.id
+            }
+            console.log("Audio msgData: ", msgData);
+            chatMsg = wx.getStorageSync(msgData.yourname + message.to) || []
+            chatMsg.push(msgData)
+            wx.setStorage({
+              key: msgData.yourname + message.to,
+              data: chatMsg,
+              success: function () {
+                //console.log('success')
+              }
+            })
+          }
+        }
+      },
+
+      onLocationMessage: function (message) {
+        console.log("Location message: ", message);
+      },
+
+      onTextMessage: function (message) {
+        var page = that.getRoomPage()
+        console.log(page)
+        if (message) {
+          if (page) {
+            page.receiveMsg(message, 'txt')
+          } else {
+            var chatMsg = that.globalData.chatMsg || []
+            var value = WebIM.parseEmoji(message.data.replace(/\n/mg, ''))
+            var time = WebIM.time()
+            var msgData = {
+              info: {
+                from: message.from,
+                to: message.to
+              },
+              username: message.from,
+              yourname: message.from,
+              msg: {
+                type: 'txt',
+                data: value
+              },
+              style: '',
+              time: time,
+              mid: 'txt' + message.id
+            }
+            chatMsg = wx.getStorageSync(msgData.yourname + message.to) || []
+            chatMsg.push(msgData)
+            wx.setStorage({
+              key: msgData.yourname + message.to,
+              data: chatMsg,
+              success: function () {
+                //console.log('success')
+              }
+            })
+          }
+        }
+      },
+      onEmojiMessage: function (message) {
+        //console.log('onEmojiMessage',message)
+        var page = that.getRoomPage()
+        //console.log(pages)
+        if (message) {
+          if (page) {
+            page.receiveMsg(message, 'emoji')
+          } else {
+            var chatMsg = that.globalData.chatMsg || []
+            var time = WebIM.time()
+            var msgData = {
+              info: {
+                from: message.from,
+                to: message.to
+              },
+              username: message.from,
+              yourname: message.from,
+              msg: {
+                type: 'emoji',
+                data: message.data
+              },
+              style: '',
+              time: time,
+              mid: 'emoji' + message.id
+            }
+            msgData.style = ''
+            chatMsg = wx.getStorageSync(msgData.yourname + message.to) || []
+            chatMsg.push(msgData)
+            //console.log(chatMsg)
+            wx.setStorage({
+              key: msgData.yourname + message.to,
+              data: chatMsg,
+              success: function () {
+                //console.log('success')
+              }
+            })
+          }
+        }
+      },
+      onPictureMessage: function (message) {
+        //console.log('Picture',message);
+        var page = that.getRoomPage()
+        if (message) {
+          if (page) {
+            //console.log("wdawdawdawdqwd")
+            page.receiveImage(message, 'img')
+          } else {
+            var chatMsg = that.globalData.chatMsg || []
+            var time = WebIM.time()
+            var msgData = {
+              info: {
+                from: message.from,
+                to: message.to
+              },
+              username: message.from,
+              yourname: message.from,
+              msg: {
+                type: 'img',
+                data: message.url
+              },
+              style: '',
+              time: time,
+              mid: 'img' + message.id
+            }
+            msgData.style = ''
+            chatMsg = wx.getStorageSync(msgData.yourname + message.to) || []
+            chatMsg.push(msgData)
+            wx.setStorage({
+              key: msgData.yourname + message.to,
+              data: chatMsg,
+              success: function () {
+                //console.log('success')
+              }
+            })
+          }
+        }
+      },
+      // 各种异常
+      onError: function (error) {
+        // 16: server-side close the websocket connection
+        if (error.type == WebIM.statusCode.WEBIM_CONNCTION_DISCONNECTED) {
+          if (WebIM.conn.autoReconnectNumTotal < WebIM.conn.autoReconnectNumMax) {
+            return;
+          }
+
+          wx.showToast({
+            title: 'server-side close the websocket connection',
+            duration: 1000
+          });
+          wx.redirectTo({
+            url: '../login/login'
+          });
+          return;
+        }
+
+        // 8: offline by multi login
+        if (error.type == WebIM.statusCode.WEBIM_CONNCTION_SERVER_ERROR) {
+          wx.showToast({
+            title: 'offline by multi login',
+            duration: 1000
+          })
+          wx.redirectTo({
+            url: '../login/login'
+          })
+          return;
+        }
+      },
+    })
   },
 
   getUserInfo: function (cb) {
@@ -40,14 +304,26 @@ App({
           console.log("读取缓存，已登录")
           wx.login({
             success: function (res) {
+              // console.log(res)
               if (res.code) {
                 //发起网络请求
                 wx.request({
-                  url: _this.globalData.baseurl+'wechat/mini/second',
+                  url: _this.globalData.baseurl + 'wechat/mini/second',
                   data: {
                     js_code: res.code
                   },
-                  success(res){
+                  success(res) {
+                    if (_this.globalData.showError && res.statusCode != '200') {
+                      var errorMsg
+                      if (res.data.error_msg) {
+                        errorMsg = res.data.error_msg
+                      } else {
+                        errorMsg = '未知错误'
+                      }
+                      errorMsg += res.statusCode
+                      app.showError(errorMsg)
+                      return
+                    }
                     console.log(res)
                     _this.updateLoginMsg(res.data)
                   }
@@ -64,7 +340,7 @@ App({
           console.log("未登录")
         }
       },
-      fail(res){
+      fail(res) {
         console.log("获取isLogin失败，未登录")
         console.log(res)
       }
@@ -89,20 +365,30 @@ App({
             mask: true
           })
           wx.request({
-            url: _this.globalData.baseurl+'wechat/mini/user',
+            url: _this.globalData.baseurl + 'wechat/mini/user',
             data: {
               js_code: login_info.code,
               iv: login_info.iv,
               encrypted_data: login_info.encrypted_data
             },
             success: function (res) {
+              if (_this.globalData.showError && res.statusCode != '200') {
+                var errorMsg
+                if (res.data.error_msg) {
+                  errorMsg = res.data.error_msg
+                } else {
+                  errorMsg = '未知错误'
+                }
+                errorMsg += res.statusCode
+                app.showError(errorMsg)
+                return
+              }
               console.log("2.登陆返回")
               console.log(res.data)
-
               //更新数据
               _this.updateLoginMsg(res.data, callbackObject)
 
-            },fail(res){
+            }, fail(res) {
               console.log(res)
               console.log("登录错误,可能是服务器没有回应，或者超时")
               if (typeof callBackObject == 'object') {
@@ -147,7 +433,7 @@ App({
       } catch (e) {
         console.log("缓存isLogin/token发生错误")
       }
-      this.globalData.reflashLogin=true
+      this.globalData.reflashLogin = true
       this.globalData.isLogin = true
       this.globalData.is_phone_bound = data.result.is_phone_bound
       console.log("登录回调开始")
@@ -214,7 +500,7 @@ App({
   },
 
 
-// 很可能会放弃使用，但目前很多还是依赖这个
+  // 很可能会放弃使用，但目前很多还是依赖这个
   getToken() {
     try {
       var token = wx.getStorageSync('token')
@@ -242,11 +528,29 @@ App({
     return false;
   },
 
+  showError(errorMsg) {
+    wx.showModal({
+      title: '错误',
+      content: errorMsg,
+      showCancel: false,
+      success: function (res) {
+        // if (res.confirm) {
+        //   console.log('用户点击确定')
+        // } else if (res.cancel) {
+        //   console.log('用户点击取消')
+        // }
+      }
+    })
+  },
+
+
   globalData: {
-    baseurl:'http://39.108.117.116/api/',
+
+    showError: true,
+    baseurl: 'http://39.108.117.116/api/',
     // staticResUrl:"http://119.29.162.17/homeal/icon/",
     userInfo: null,
-    reflashOrder:false,
-    reflashLogin:false
+    reflashOrder: false,
+    reflashLogin: false
   }
 })

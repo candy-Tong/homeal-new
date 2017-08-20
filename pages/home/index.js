@@ -1,5 +1,5 @@
 // pages/home/index.js
-var app=getApp()
+var app = getApp()
 var chef_card = require('../../components/chef_card/index.js')
 Page({
 
@@ -37,9 +37,21 @@ Page({
     var _this = this
 
     wx.request({
-      url: app.globalData.baseurl +'miscel/banner',
+      url: app.globalData.baseurl + 'miscel/banner',
       success(res) {
         // console.log(res)
+               
+        if (app.globalData.showError && res.statusCode != '200') {
+          var errorMsg
+          if (res.data.error_msg) {
+            errorMsg = res.data.error_msg
+          } else {
+            errorMsg = '未知错误'
+          }
+          errorMsg += res.statusCode
+          app.showError(errorMsg)
+          return
+        }
         var banner = res.data.result
         _this.setData({
           banner: res.data.result
@@ -48,28 +60,50 @@ Page({
     })
     _this.cacheLock = true
     wx.request({
-      url: app.globalData.baseurl +'miscel/maingrid',
+      url: app.globalData.baseurl + 'miscel/maingrid',
       data: {
         page: 1,
         count: this.pageSize
       },
       success(res) {
+        if (app.globalData.showError && res.statusCode != '200') {
+          var errorMsg
+          if (res.data.error_msg) {
+            errorMsg = res.data.error_msg
+          } else {
+            errorMsg = '未知错误'
+          }
+          errorMsg += res.statusCode
+          app.showError(errorMsg)
+          return
+        }
         _this.setData({
           chef_cards: res.data.result
         })
         // 预加载
         _this.curPage++
         wx.request({
-          url: app.globalData.baseurl +'miscel/maingrid',
+          url: app.globalData.baseurl + 'miscel/maingrid',
           data: {
             page: _this.curPage,
             count: _this.pageSize
           },
           success(res) {
+            if (app.globalData.showError && res.statusCode != '200') {
+              var errorMsg
+              if (res.data.error_msg) {
+                errorMsg = res.data.error_msg
+              } else {
+                errorMsg = '未知错误'
+              }
+              errorMsg += res.statusCode
+              app.showError(errorMsg)
+              return
+            }
             _this.cache = res.data.result
             console.log("cache:")
             console.log(_this.cache)
-            if (_this.cache.length != 0) {
+            if (_this.cache && _this.cache.length != 0) {
               _this.curPage++
             }
             _this.cacheLock = false
@@ -119,9 +153,20 @@ Page({
     var _this = this
     this.curPage = 1
     wx.request({
-      url: app.globalData.baseurl +'miscel/banner',
+      url: app.globalData.baseurl + 'miscel/banner',
       success(res) {
         // console.log(res)
+        if (app.globalData.showError && res.statusCode != '200') {
+          var errorMsg
+          if (res.data.error_msg) {
+            errorMsg = res.data.error_msg
+          } else {
+            errorMsg = '未知错误'
+          }
+          errorMsg += res.statusCode
+          app.showError(errorMsg)
+          return
+        }
         var banner = res.data.result
         _this.setData({
           banner: res.data.result
@@ -130,12 +175,23 @@ Page({
     })
     _this.cacheLock = true
     wx.request({
-      url: app.globalData.baseurl +'miscel/maingrid',
+      url: app.globalData.baseurl + 'miscel/maingrid',
       data: {
         page: 1,
         count: this.pageSize
       },
       success(res) {
+        if (app.globalData.showError && res.statusCode != '200') {
+          var errorMsg
+          if (res.data.error_msg) {
+            errorMsg = res.data.error_msg
+          } else {
+            errorMsg = '未知错误'
+          }
+          errorMsg += res.statusCode
+          app.showError(errorMsg)
+          return
+        }
         _this.setData({
           chef_cards: res.data.result
         })
@@ -144,12 +200,23 @@ Page({
     })
     this.curPage++
     wx.request({
-      url: app.globalData.baseurl +'miscel/maingrid',
+      url: app.globalData.baseurl + 'miscel/maingrid',
       data: {
         page: this.curPage,
         count: this.pageSize
       },
       success(res) {
+        if (app.globalData.showError && res.statusCode != '200') {
+          var errorMsg
+          if (res.data.error_msg) {
+            errorMsg = res.data.error_msg
+          } else {
+            errorMsg = '未知错误'
+          }
+          errorMsg += res.statusCode
+          app.showError(errorMsg)
+          return
+        }
         _this.cache = res.data.result
         console.log(_this.cache)
         if (_this.cache.length != 0) {
@@ -186,12 +253,23 @@ Page({
       }
       _this.cacheLock = true
       wx.request({
-        url: app.globalData.baseurl +'miscel/maingrid',
+        url: app.globalData.baseurl + 'miscel/maingrid',
         data: {
           page: this.curPage,
           count: this.pageSize
         },
         success(res) {
+          if (app.globalData.showError && res.statusCode != '200') {
+            var errorMsg
+            if (res.data.error_msg) {
+              errorMsg = res.data.error_msg
+            } else {
+              errorMsg = '未知错误'
+            }
+            errorMsg += res.statusCode
+            app.showError(errorMsg)
+            return
+          }
           _this.cache = res.data.result
           console.log(_this.cache)
           if (_this.cache.length != 0) {

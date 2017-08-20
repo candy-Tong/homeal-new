@@ -24,32 +24,35 @@ Page({
 
   },
 
+  contactWithChef: order_card.contactWithChef,
+
   seeOrder: order_card.seeOrder,
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var _this = this
-    var callback = [
-      {
-        func: function () {
-          _this.setData({
-            isLogin: true
-          })
-          _this.getOrder()
-        }
-      },
-      {
-        isError: true,
-        func: function () {
-          _this.setData({
-            isLogin: false
-          })
-        }
-      }
-    ]
-    // 检查是否登录
-    app.checkLogin(callback)
+    // var _this = this
+    // var callback = [
+    //   {
+    //     func: function () {
+    //       _this.setData({
+    //         isLogin: true
+    //       })
+    //       _this.getOrder()
+    //     }
+    //   },
+    //   {
+    //     isError: true,
+    //     func: function () {
+    //       _this.setData({
+    //         isLogin: false
+    //       })
+    //     }
+    //   }
+    // ]
+    // // 检查是否登录
+    // app.checkLogin(callback)
 
 
   },
@@ -73,6 +76,17 @@ Page({
       },
       success(res) {
         console.log(res)
+        if (app.globalData.showError && res.statusCode != '200') {
+          var errorMsg
+          if (res.data.error_msg) {
+            errorMsg = res.data.error_msg
+          } else {
+            errorMsg = '未知错误'
+          }
+          errorMsg += res.statusCode
+          app.showError(errorMsg)
+          return
+        }
         _this.setData({
           order: res.data.result.reverse(),
           isLogin: true

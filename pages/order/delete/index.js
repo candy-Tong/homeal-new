@@ -22,10 +22,10 @@ Page({
     var order_id = this.order_id
     var token = app.globalData.token
     var reason = this.reason
-    if(!reason||reason.length==0){
+    if (!reason || reason.length == 0) {
       wx.showModal({
         content: '原因不能为空',
-        showCancel:false
+        showCancel: false
       })
       return
     }
@@ -33,27 +33,38 @@ Page({
       title: '加载中',
     })
     wx.request({
-      url: app.globalData.baseurl +'booking/' + order_id + "?reason=" + reason,
+      url: app.globalData.baseurl + 'booking/' + order_id + "?reason=" + reason,
       header: {
         token: token
       },
       method: "DELETE",
       success(res) {
         console.log(res)
-        if(res.data.result=="success"){
+        if (app.globalData.showError && res.statusCode != '200') {
+          var errorMsg
+          if (res.data.error_msg) {
+            errorMsg = res.data.error_msg
+          } else {
+            errorMsg = '未知错误'
+          }
+          errorMsg += res.statusCode
+          app.showError(errorMsg)
+          return
+        }
+        if (res.data.result == "success") {
           app.globalData.reflashOrder = true
           wx.switchTab({
             url: '/pages/order/index',
           })
-        }else{
+        } else {
           console.log("发生错误，删除失败，可能是服务器问题")
         }
       },
-      fail(res){
+      fail(res) {
         console.log("删除失败，可能是请求失调了")
         console.log(res)
       },
-      complete(res){
+      complete(res) {
         wx.hideLoading()
       }
     })
@@ -63,7 +74,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log("确定后删除booking_id为"+options.order_id)
+    console.log("确定后删除booking_id为" + options.order_id)
     this.order_id = options.order_id
   },
 

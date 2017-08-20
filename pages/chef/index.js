@@ -1,5 +1,5 @@
 // pages/chef/index.js
-var app=getApp()
+var app = getApp()
 var menu_card = require('../../components/menu_card/index.js')
 
 Page({
@@ -46,9 +46,20 @@ Page({
       }
     });
     wx.request({
-      url: app.globalData.baseurl +'chef/' + chef_id,
+      url: app.globalData.baseurl + 'chef/' + chef_id,
       success(res) {
         console.log(res)
+        if (app.globalData.showError && res.statusCode != '200') {
+          var errorMsg
+          if (res.data.error_msg) {
+            errorMsg = res.data.error_msg
+          } else {
+            errorMsg = '未知错误'
+          }
+          errorMsg += res.statusCode
+          app.showError(errorMsg)
+          return
+        }
         _this.setData({
           chef: res.data.result,
           chef_id

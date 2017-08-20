@@ -73,10 +73,10 @@ Page({
     // var _this = this
     if (app.globalData.isLogin == true) {
       // 已登录
-      if (app.globalData.is_phone_bound==true){
+      if (app.globalData.is_phone_bound == true) {
         // 已绑定手机
         this.booking(e)
-      }else{
+      } else {
         // 未绑定手机，无法下单，询问是否跳转绑定手机
         wx.showModal({
           content: '未绑定手机，不能下单',
@@ -91,7 +91,7 @@ Page({
           }
         })
       }
-     
+
     } else {
       // 未登录
       wx.showModal({
@@ -107,7 +107,7 @@ Page({
         }
       })
     }
-    
+
   },
   booking(e) {
     var _this = this
@@ -165,7 +165,7 @@ Page({
     console.log("booking_notice:" + booking_notice)
 
     wx.request({
-      url: app.globalData.baseurl+'booking',
+      url: app.globalData.baseurl + 'booking',
       method: 'POST',
       data: {
         "phone": phone,
@@ -185,7 +185,6 @@ Page({
         _this.canSubmit = true
         console.log(res)
         if (res.data.result) {
-
         } else {
           console.log("订单提交出现错误")
         }
@@ -199,7 +198,17 @@ Page({
           console.log("允许提交订单")
           return
         }
-
+        if (app.globalData.showError && res.statusCode != '200') {
+          var errorMsg
+          if (res.data.error_msg) {
+            errorMsg = res.data.error_msg
+          } else {
+            errorMsg = '未知错误'
+          }
+          errorMsg += res.statusCode
+          app.showError(errorMsg)
+          return
+        }
         wx.redirectTo({
           url: '/pages/booking/submit/index?order_id=' + res.data.result.order_no
         })

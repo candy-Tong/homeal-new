@@ -9,20 +9,20 @@ Page({
   },
 
   open: function () {
-    var order_id=this.order_id
+    var order_id = this.order_id
     wx.showActionSheet({
       itemList: ['付款', '联系私厨', '取消订单'],
       success: function (res) {
         if (!res.cancel) {
           if (res.tapIndex == 0) {
             // 付款
-          } else if (res.tapIndex==1) {
+          } else if (res.tapIndex == 1) {
             // 联系私厨
-          } else if (res.tapIndex==2) {
+          } else if (res.tapIndex == 2) {
             // 取消订单
 
             wx.navigateTo({
-              url: '/pages/order/delete/index?order_id='+order_id,
+              url: '/pages/order/delete/index?order_id=' + order_id,
             })
           } else {
             console.log("ActionSheet发生错误，位置tapIndex")
@@ -31,7 +31,6 @@ Page({
       }
     });
   },
-
 
   goChef(e) {
     console.log(e.currentTarget.id)
@@ -49,12 +48,23 @@ Page({
     var order_id = options.order_id
     var token = app.globalData.token
     wx.request({
-      url: app.globalData.baseurl +'booking/' + order_id,
+      url: app.globalData.baseurl + 'booking/' + order_id,
       header: {
         token: token
       },
       success(res) {
         console.log(res)
+        if (app.globalData.showError && res.statusCode != '200') {
+          var errorMsg
+          if (res.data.error_msg) {
+            errorMsg = res.data.error_msg
+          } else {
+            errorMsg = '未知错误'
+          }
+          errorMsg += res.statusCode
+          app.showError(errorMsg)
+          return
+        }
         _this.setData({
           order: res.data.result
         })

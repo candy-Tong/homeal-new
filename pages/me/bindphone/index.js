@@ -41,14 +41,25 @@ Page({
         console.log(token)
         console.log(phone)
         wx.request({
-          url: app.globalData.baseurl +'bind/smscode',
+          url: app.globalData.baseurl + 'bind/smscode',
           header: {
             phone: phone,
             token: token
           },
           success(res) {
-            _this.submitPhone = phone
             console.log(res)
+            if (app.globalData.showError && res.statusCode != '200') {
+              var errorMsg
+              if (res.data.error_msg) {
+                errorMsg = res.data.error_msg
+              } else {
+                errorMsg = '未知错误'
+              }
+              errorMsg += res.statusCode
+              app.showError(errorMsg)
+              return
+            }
+            _this.submitPhone = phone
             _this.setData({
               code: res.data.result
             })
@@ -75,7 +86,7 @@ Page({
       mask: true
     })
     wx.request({
-      url: app.globalData.baseurl +'bind/phone',
+      url: app.globalData.baseurl + 'bind/phone',
       header: {
         "Content-Type": "application/x-www-form-urlencoded"
       },
@@ -101,6 +112,17 @@ Page({
             content: '该手机已经被使用，请联系管理员或更换绑定手机',
             showCancel: false
           });
+          return
+        }
+        if (app.globalData.showError && res.statusCode != '200') {
+          var errorMsg
+          if (res.data.error_msg) {
+            errorMsg = res.data.error_msg
+          } else {
+            errorMsg = '未知错误'
+          }
+          errorMsg += res.statusCode
+          app.showError(errorMsg)
           return
         }
         if (res.data.is_error == false) {

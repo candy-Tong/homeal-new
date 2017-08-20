@@ -1,9 +1,10 @@
 {
-  "pages":[
+  "pages": [
     "pages/home/index",
-    "pages/im/chat/index",
-    "pages/im/index",
-    
+    "pages/im/main/main",
+    "pages/im/add_new/add_new",
+    "pages/im/inform/inform",
+    "pages/im/chatroom/chatroom",
     "pages/me/index",
     "pages/order/delete/index",
     "pages/me/bindphone/index",
@@ -16,8 +17,8 @@
     "pages/index/index",
     "pages/logs/logs"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarTitleText": "首页",
     "navigationBarBackgroundColor": "#E64340",
     "navigationBarTextStyle": "white",

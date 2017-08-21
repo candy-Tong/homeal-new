@@ -1,11 +1,12 @@
 <!--pages/chef/index.wxml-->
 <import src="/components/menu_card/index.wxml" />
+<import src="/components/comment_card/comment_card.wxml" />
 
 <view class="">
   <swiper autoplay="true" class="banner" indicator-dots="true" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff">
     <block wx:for="{{chef.kitchen_photo_urls}}" wx:key="{{index}}">
       <swiper-item>
-        <image src="{{item}}" class="banner-image" mode="widthFix" />
+        <image src="{{item}}" class="banner-image" mode="aspectFill" />
       </swiper-item>
     </block>
   </swiper>
@@ -59,10 +60,37 @@
         <block wx:for="{{chef.menus}}" wx:key="{{index}}">
           <template is="menu_card" data="{{...item,index}}"></template>
         </block>
+      </view>
+
+      <view class="" hidden="{{activeIndex != 1}}">
+        <view class="page__bd">
+          <view class="weui-article">
+            <view class="weui-article__h1 chef_name">店铺名称</view>
+            <view class="weui-article__section">
+              <view class="weui-article__title">简介</view>
+              <view class="weui-article__section">
+                <view class="weui-article__p">
+                  作为一名名声在外的台湾人，梁文道先生的基本素养一定是有的。而且作为70年代出生的香港人，后转入台湾，他在青少年时期完整的经历和见识了中国历史上最深刻的变革之一，这对他们的人生认知非常有帮助。 从廖信忠到梁文道，这一代台湾人似乎统统喜欢由细节说起：要么是抻出一条血淋淋的事实给你；要么就是拎着个头儿往外拽，扯出一轱辘给你讲一轱辘的故事。而且他们是有细节洁癖的，很难忍受李敖那种不懂装懂其喜黑服的原因大抵在此。
+                </view>
+
+              </view>
+              <view class="weui-article__title">章标题</view>
+              <view class="weui-article__section">
+                <view class="weui-article__p">
+                  作为一名名声在外的台湾人，梁文道先生的基本素养一定是有的。而且作为70年代出生的香港人，后转入台湾，他在青少年时期完整的经历和见识了中国历史上最深刻的变革之一，这对他们的人生认知非常有帮助。 从廖信忠到梁文道，这一代台湾人似乎统统喜欢由细节说起：要么是抻出一条血淋淋的事实给你；要么就是拎着个头儿往外拽，扯出一轱辘给你讲一轱辘的故事。而且他们是有细节洁癖的，很难忍受李敖那种不懂装懂其喜黑服的原因大抵在此。
+                </view>
+
+              </view>
+            </view>
+          </view>
         </view>
 
-      <view class="weui-tab__content" hidden="{{activeIndex != 1}}">选项二的内容</view>
-      <view class="weui-tab__content" hidden="{{activeIndex != 2}}">选项三的内容</view>
+      </view>
+      <view class="" hidden="{{activeIndex != 2}}">
+        <template is="comment_card" ></template>
+        <template is="comment_card" ></template>
+        <template is="comment_card" ></template>      
+      </view>
     </view>
   </view>
 </view>

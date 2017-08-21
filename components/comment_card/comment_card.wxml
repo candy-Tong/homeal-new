@@ -1,0 +1,14 @@
+
+<template name="comment_card">
+  <view class="weui-panel__bd">
+    <view url="" class="weui-media-box comment-card" hover-class="weui-cell_active">
+      <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+        <image mode="aspectFill" class="weui-media-box__thumb" src="http://img95.699pic.com/photo/00039/2516.jpg_wh300.jpg!/format/webp" />
+      </view>
+      <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+        <view class="weui-media-box__title comment-title">用户名</view>
+        <view class=" comment">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</view>
+      </view>
+    </view>
+  </view>
+</template>

@@ -545,7 +545,7 @@ App({
 
 
   globalData: {
-
+    // showError为true时，网络请求非200会弹框报错
     showError: true,
     baseurl: 'http://39.108.117.116/api/',
     // staticResUrl:"http://119.29.162.17/homeal/icon/",

@@ -1,5 +1,6 @@
 /* pages/chef/index.wxss */
 @import '/components/menu_card/index.wxss';
+@import '/components/comment_card/comment_card.wxss';
 
 .banner {
   width: 750rpx;
@@ -9,7 +10,6 @@
 .banner-image {
   width: 750rpx;
 }
-
 
 .page__bd {
   height: 100%;
@@ -54,7 +54,7 @@
 
 .avatar {
   border-radius: 60px;
-   margin-top:5px; 
+  margin-top: 5px;
 }
 
 .desc {
@@ -87,3 +87,8 @@
   font-size: 14px;
   color: #999;
 }
+
+.chef_name {
+  color: #e64340;
+}
+

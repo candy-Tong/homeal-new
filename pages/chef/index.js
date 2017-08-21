@@ -1,6 +1,7 @@
 // pages/chef/index.js
 var app = getApp()
 var menu_card = require('../../components/menu_card/index.js')
+var menu_card = require('../../components/comment_card/comment_card.js')
 
 Page({
 

@@ -13,3 +13,6 @@
   color:#e64340;
   margin-bottom: 5px;
 }
+.comment-img-box{
+  padding: 15px
+}

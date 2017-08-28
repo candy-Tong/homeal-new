@@ -14,7 +14,7 @@
 </view>
 
 
-<view class="">
+<view>
   <swiper autoplay="true" class="banner" indicator-dots="true" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff">
     <block wx:for="{{banner}}" wx:key="{{index}}">
       <swiper-item>
@@ -23,7 +23,8 @@
     </block>
   </swiper>
 </view>
-
-<block wx:for="{{chef_cards}}" wx:key="{{index}}">
-  <template is="chef_card" data="{{...item,card_index:index}}" />
-</block>
+<view class="home-container">
+  <block wx:for="{{chef_cards}}" wx:key="{{index}}">
+    <template is="chef_card" data="{{...item,card_index:index}}" />
+  </block>
+</view>

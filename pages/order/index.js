@@ -20,6 +20,15 @@ Page({
     });
   },
 
+
+  handelLogin: function (e) {
+    wx.showLoading({
+      title: '登录中',
+      mask: true,
+    })
+  },
+
+
   deleteOrder(e) {
 
   },

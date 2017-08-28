@@ -1,4 +1,8 @@
 // pages/chef/index.js
+var strophe = require('../../utils/strophe.js')
+var WebIM = require('../../utils/WebIM.js')
+var WebIM = WebIM.default
+
 var app = getApp()
 var menu_card = require('../../components/menu_card/index.js')
 var menu_card = require('../../components/comment_card/comment_card.js')
@@ -30,7 +34,19 @@ Page({
       urls: this.data.chef.menus[index].menu_photo_urls // 需要预览的图片http链接列表
     })
   },
-
+  
+  into_room: function (event) {
+    var that = this
+    console.log(that.data.chef)
+    WebIM.conn.addRoster({ 'name': that.data.chef.easemob_username})
+    var nameList = {
+      myName: wx.getStorageSync('easemobUsername'),
+      your: that.data.chef.easemob_username
+    }
+    wx.navigateTo({
+      url: '../im/chatroom/chatroom?username=' + JSON.stringify(nameList)
+    })
+  },
   booking: menu_card.booking,
   /**
    * 生命周期函数--监听页面加载

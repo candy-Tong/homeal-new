@@ -70,7 +70,7 @@
 	margin-bottom: 50px;
 }
 .contain {
-	margin-top: 40px;
+	margin-top: 0;
 }
 .chat,.chat_groups,.chat_lists{
 	width: 100%;
@@ -181,4 +181,8 @@
 .chats image {
 	width: 100%;
 	height: 100%;
+}
+
+.login_button{
+  width: 420rpx;
 }

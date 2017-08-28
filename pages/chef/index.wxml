@@ -22,8 +22,8 @@
         <view class="weui-media-box__title">
           {{chef.kitchen_name}}
           <view class="icon">
-            <view class="favor-text">私信</view>
-            <view class="chat-icon"></view>
+            <view bindtap="into_room" class="favor-text">私信</view>
+            <view bindtap="into_room" class="chat-icon"></view>
             <view class="chat-text">收藏</view>
             <view class="favor-icon"></view>
           </view>

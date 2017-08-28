@@ -42,7 +42,7 @@ Page({
     onLoad: function (options) {
         var that = this
         console.log(options)
-        var myName = wx.getStorageSync('myUsername')
+        var myName = wx.getStorageSync('easemobUsername')
         console.log(myName)
         var options = JSON.parse(options.username)
         var num = wx.getStorageSync(options.your + myName).length - 1
@@ -55,7 +55,7 @@ Page({
         }
         this.setData({
             yourname: options.your,
-            myName: myName,
+            myName: wx.getStorageSync('myUsername'),
             inputMessage: '',
             chatMsg: wx.getStorageSync(options.your + myName) || []
         })
@@ -265,7 +265,7 @@ Page({
                 that.data.chatMsg.push(msgData)
                 console.log(that.data.chatMsg)
                 // 存储到本地消息
-                var myName = wx.getStorageSync('myUsername')
+                var myName = wx.getStorageSync('easemobUsername')
                 wx.setStorage({
                     key: that.data.yourname + myName,
                     data: that.data.chatMsg,
@@ -294,7 +294,7 @@ Page({
         var that = this
         // //console.log(that.data.userMessage)
         // //console.log(that.data.sendInfo)
-        var myName = wx.getStorageSync('myUsername')
+        var myName = wx.getStorageSync('easemobUsername')
         var id = WebIM.conn.getUniqueId();
         var msg = new WebIM.message('txt', id);
         msg.set({
@@ -353,7 +353,12 @@ Page({
 
     receiveMsg: function (msg, type) {
         var that = this
-        var myName = wx.getStorageSync('myUsername')
+        var myName = wx.getStorageSync('easemobUsername')
+
+        console.log("receiveMsg!!!")
+        console.log("msg: ", msg)
+
+
         if (msg.from == that.data.yourname || msg.to == that.data.yourname) {
             if (type == 'txt') {
                 var value = WebIM.parseEmoji(msg.data.replace(/\n/mg, ''))
@@ -622,7 +627,7 @@ Page({
     //                             }
     //                             that.data.chatMsg.push(msgData)
     //                             console.log(that.data.chatMsg)
-    //                             var myName = wx.getStorageSync('myUsername')
+    //                             var myName = wx.getStorageSync('easemobUsername')
     //                             wx.setStorage({
     //                                 key: that.data.yourname + myName,
     //                                 data: that.data.chatMsg,
@@ -647,7 +652,7 @@ Page({
     // },
     receiveImage: function (msg, type) {
         var that = this
-        var myName = wx.getStorageSync('myUsername')
+        var myName = wx.getStorageSync('easemobUsername')
         //console.log(msg)
         if (msg) {
             //console.log(msg)
@@ -690,7 +695,7 @@ Page({
 
 receiveVideo: function (msg, type) {
         var that = this
-        var myName = wx.getStorageSync('myUsername')
+        var myName = wx.getStorageSync('easemobUsername')
         //console.log(msg)
         if (msg) {
             //console.log(msg)
@@ -842,7 +847,7 @@ receiveVideo: function (msg, type) {
                                 }
                                 that.data.chatMsg.push(msgData)
                                 //console.log(that.data.chatMsg)
-                                var myName = wx.getStorageSync('myUsername')
+                                var myName = wx.getStorageSync('easemobUsername')
                                 wx.setStorage({
                                     key: that.data.yourname + myName,
                                     data: that.data.chatMsg,

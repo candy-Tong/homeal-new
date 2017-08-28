@@ -33,7 +33,7 @@
                 </view>
               </view>
             </view>
-            <button open-type="getUserInfo" bindgetuserinfo="bindgetuserinfo" type="warn" class="weui-btn login_button">登录</button>
+            <button bindtap="handelLogin" open-type="getUserInfo" bindgetuserinfo="bindgetuserinfo" type="warn" class="weui-btn login_button">登录</button>
           </view>
         </block>
       </view>

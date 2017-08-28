@@ -9,6 +9,13 @@ Page({
     userInfo: {}
   },
 
+  handelLogin:function(e){
+    wx.showLoading({
+      title: '登录中',
+      mask: true,
+    })
+  },
+
   bindgetuserinfo(e){
     var _this = this
     console.log(e)
@@ -157,5 +164,5 @@ Page({
    */
   onShareAppMessage: function () {
   
-  }
+  },
 })

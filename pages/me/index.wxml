@@ -7,7 +7,7 @@
     </view>
   </block>
   <block wx:else>
-    <button open-type="getUserInfo" bindgetuserinfo="bindgetuserinfo" class="login_button" >点击登录</button>
+    <button bindtap="handelLogin" open-type="getUserInfo" bindgetuserinfo="bindgetuserinfo" class="login_button" >点击登录</button>
   </block>
 
   <view class="option ">

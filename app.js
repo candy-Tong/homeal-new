@@ -3,8 +3,18 @@ require('./utils/strophe.js')
 var WebIM = require('./utils/WebIM.js').default
 
 App({
+  getRoomPage: function () {
+    return this.getPage("pages/im/chatroom/chatroom")
+  },
+  getPage: function (pageName) {
+    var pages = getCurrentPages()
+    return pages.find(function (page) {
+      return page.__route__ == pageName
+    })
+  },
   onLaunch: function () {
     var _this = this
+    var that = this
     this.autoLogin()
     //调用API从本地缓存中获取数据
     var logs = wx.getStorageSync('logs') || []
@@ -14,7 +24,8 @@ App({
     // 接入环信demo
     WebIM.conn.listen({
       onOpened: function (message) {
-        WebIM.conn.setPresence()
+        //WebIM.conn.setPresence()
+        console.log("***** onOpened *****")
       },
       onPresence: function (message) {
         switch (message.type) {
@@ -46,7 +57,9 @@ App({
           pages[0].onShow()
         }
       },
-
+      onReceivedMessage: function(message) {
+        console.log("***** onReceivedMessage *****")
+      },
       onVideoMessage: function (message) {
         console.log('onVideoMessage: ', message);
         var page = that.getRoomPage()
@@ -130,8 +143,9 @@ App({
       },
 
       onTextMessage: function (message) {
+        console.log("***** onTextMessage *****")
         var page = that.getRoomPage()
-        console.log(page)
+        console.log("onTextMessage: " , page)
         if (message) {
           if (page) {
             page.receiveMsg(message, 'txt')
@@ -285,9 +299,11 @@ App({
       wx.getUserInfo({
         withCredentials: true,
         success: function (res) {
+          console.log("User Info", res)
+          wx.setStorageSync('myUsername')
           that.globalData.userInfo = res.userInfo
           typeof cb == "function" && cb(that.globalData.userInfo)
-        }
+        },
       })
     }
   },
@@ -304,7 +320,7 @@ App({
           console.log("读取缓存，已登录")
           wx.login({
             success: function (res) {
-              // console.log(res)
+              console.log(res)
               if (res.code) {
                 //发起网络请求
                 wx.request({
@@ -324,7 +340,7 @@ App({
                       app.showError(errorMsg)
                       return
                     }
-                    console.log(res)
+                    console.log("***", res)
                     _this.updateLoginMsg(res.data)
                   }
                 })
@@ -372,6 +388,9 @@ App({
               encrypted_data: login_info.encrypted_data
             },
             success: function (res) {
+
+              wx.hideLoading()
+
               if (_this.globalData.showError && res.statusCode != '200') {
                 var errorMsg
                 if (res.data.error_msg) {
@@ -380,7 +399,7 @@ App({
                   errorMsg = '未知错误'
                 }
                 errorMsg += res.statusCode
-                app.showError(errorMsg)
+                _this.showError(errorMsg)
                 return
               }
               console.log("2.登陆返回")
@@ -391,6 +410,7 @@ App({
             }, fail(res) {
               console.log(res)
               console.log("登录错误,可能是服务器没有回应，或者超时")
+
               if (typeof callBackObject == 'object') {
                 callBackObject.forEach(function (item, index, object) {
                   if (item.isError && item.func) {
@@ -419,8 +439,14 @@ App({
     var isError = false
     if (data.result && data.result.token) {
       var token = data.result.token
-      console.log(token)
+      var easemobUsername = data.result.easemob_username
+      var easemobPassword = data.result.easemob_password
+
+      console.log("=== easemobUsername: " + easemobUsername + ", " + token)
+
       this.globalData.token = token
+      this.globalData.easemobUsername = easemobUsername
+      this.globalData.easemobPassword = easemobPassword
     } else {
       isError = true
       console.log("发生错误，token不存在")
@@ -430,6 +456,8 @@ App({
       try {
         wx.setStorageSync('isLogin', true)
         wx.setStorageSync('token', token)
+        wx.setStorageSync('easemobUsername', easemobUsername)
+        wx.setStorageSync('easemobPassword', easemobPassword)
       } catch (e) {
         console.log("缓存isLogin/token发生错误")
       }
@@ -448,6 +476,10 @@ App({
           }
         })
       }
+
+      console.log("Login Easemob")
+      this.loginEasemob(easemobUsername, easemobPassword)
+
     } else if (isError == true) {
       console.log("登录错误回调开始")
       if (typeof callBackObject == 'object') {
@@ -472,6 +504,7 @@ App({
     if (isLogin && isLogin == true) {
       //已登录
       console.log("已登录，回调开始")
+      
       if (typeof callBackObject == 'object') {
         callBackObject.forEach(function (item, index, object) {
           if (item.func && (item.isError == undefined || item.isError != true)) {
@@ -483,7 +516,6 @@ App({
           }
         })
       }
-
     } else {
       //未登录
       console.log("未登录，错误处理回调开始")
@@ -542,7 +574,17 @@ App({
       }
     })
   },
-
+  
+  loginEasemob: function(username, password) {
+    var options = {
+      apiUrl: WebIM.config.apiURL,
+      user: username,
+      pwd: password,
+      grant_type: 'password',
+      appKey: WebIM.config.appkey
+    }
+    WebIM.conn.open(options)
+  },
 
   globalData: {
     // showError为true时，网络请求非200会弹框报错

@@ -20,13 +20,13 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarTitleText": "首页",
-    "navigationBarBackgroundColor": "#E64340",
+    "navigationBarBackgroundColor": "#e51c23",
     "navigationBarTextStyle": "white",
     "backgroundColor": "#f5f7f9"
   },
   "tabBar": {
-    "selectedColor": "#495060",
-    "backgroundColor": "#fff",
+    "selectedColor": "#e51c23",
+    "backgroundColor": "#f4f4f4",
     "list": [
       {
         "pagePath": "pages/home/index",
@@ -39,6 +39,12 @@
         "text": "订单",
         "iconPath": "/image/icon_order.png",
         "selectedIconPath": "/image/icon_order_HL.png"
+      },
+      {
+        "pagePath": "pages/im/main/main",
+        "text": "消息",
+        "iconPath": "/image/icon_chat.png",
+        "selectedIconPath": "/image/icon_chat_HL.png"
       },
       {
         "pagePath": "pages/me/index",

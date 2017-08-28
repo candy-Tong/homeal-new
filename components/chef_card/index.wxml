@@ -10,7 +10,6 @@
           <view class="weui-media-box__desc">{{chef_brief}}</view>
         </view>
       </view>
-
       <view class="image-wrapper ">
         <block wx:for="{{maingrid_photo_url}}" wx:key="{{index}}">
           <image id="{{card_index}}" catchtap="previewImage" data-url="{{item}}" class="dish-image " src="{{item}}" mode="aspectFill" ></image>

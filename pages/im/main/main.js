@@ -1,18 +1,19 @@
 var strophe = require('../../../utils/strophe.js')
 var WebIM = require('../../../utils/WebIM.js')
 var WebIM = WebIM.default
-
+var app = getApp()
 Page({
     data: {
         search_btn: true,
         search_friend: false,
         show_mask: false,
         myName: '',
-        member: []
+        member: [],
+        isLogin: true
     },
     onLoad: function (option) {
         this.setData({
-            myName: option.myName
+          myName: wx.getStorageSync('easemobUsername')
         })
         //console.log("wjy")
     },
@@ -21,11 +22,12 @@ Page({
         // //console.log(WebIM.conn)
         var rosters = {
             success: function (roster) {
+              console.log("roster: ", roster)
                 var member = []
                 for (var i = 0; i < roster.length; i++) {
-                    if (roster[i].subscription == "both") {
+                    //if (roster[i].subscription == "both") {
                         member.push(roster[i])
-                    }
+                    //}
                 }
                 that.setData({
                     member: member
@@ -187,6 +189,65 @@ Page({
         wx.navigateTo({
             url: '../friend_info/friend_info?yourname=' + event.target.dataset.username
         })
-    }
+    },
+    // 用户点击登陆
+    bindgetuserinfo(e) {
+      var _this = this
+      console.log(e)
+      var userinfo = e.detail
+      if (userinfo.errMsg && userinfo.errMsg.indexOf('fail') > 0) {
+        console.log("无法获取用户userInfo")
+      } else if (userinfo.errMsg && userinfo.errMsg.indexOf('ok') > 0) {
+        // 配置回调函数
+        var callback = [
+          {
+            func: function () {
+              wx.hideLoading()
+              _this.setData({
+                isLogin: true
+              })
+              if (app.globalData.is_phone_bound) {
+                // 已绑定手机
+                _this.getOrder()
+              } else {
+                // 未绑定手机
+                wx.showModal({
+                  content: '未绑定手机，是否现在绑定',
+                  showCancel: true,
+                  confirmColor: "#E64340",
+                  success(res) {
+                    if (res.confirm == true) {
+                      wx.navigateTo({
+                        url: '/pages/me/bindphone/index',
+                      })
+                    }
+                  }
+                })
+              }
+            }
+          },
+          {
+            isError: true,
+            func: function () {
+              wx.hideLoading()
+              console.log("已授权登录却发生登录错误,可能是存储token出现问题")
+              _this.setData({
+                isLogin: false
+              })
+            }
+          }
+        ]
+        app.first_login(e, callback)
 
+      } else {
+        console.log("发生错误，bindgetuserinfo出现其他状况")
+      }
+    },
+
+    handelLogin: function (e) {
+      wx.showLoading({
+        title: '登录中',
+        mask: true,
+      })
+    },
 })

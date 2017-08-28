@@ -61,7 +61,7 @@ Page({
         })
         console.log(that.data.chatMsg)
         wx.setNavigationBarTitle({
-            title: that.data.yourname
+            title: options.your
         })
     },
     onShow: function () {

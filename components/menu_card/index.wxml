@@ -1,5 +1,5 @@
 <template name="menu_card">
- <view bindtap="booking" id="{{index}}" hover-class="navigator-hover">
+ <view catchtap="booking" id="{{index}}" hover-class="navigator-hover">
 
     <view class="weui-panel">
       <view class="weui-panel__bd">

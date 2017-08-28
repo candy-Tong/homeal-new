@@ -1603,6 +1603,7 @@ connection.prototype.addRoster = function (options) {
   }
   var suc = options.success || _utils.emptyfn;
   var error = options.error || _utils.emptyfn;
+  console.log(this.context)
   this.context.stropheConn.sendIQ(iq.tree(), suc, error);
 };
 

@@ -230,7 +230,10 @@ Page({
     // 构建选择套餐和人数的数组
     var menuSelector = []
     var peopleSelector = []
+
     var chef = JSON.parse(options.chef)
+
+
     chef.menus.forEach(function (value, index, array) {
       menuSelector.push(value.menu_name)
       var people = []
@@ -244,10 +247,15 @@ Page({
     chef.menus.forEach(function (value, index, array) {
       menu_price.push(value.menu_price)
     })
-    var cost = this.getPrice(menu_price, peopleSelector, options.menuIndex, 0)
+    if (options.menuIndex){
+      var menuIndex = options.menuIndex
+    }else{
+      var menuIndex=0
+    }
+    var cost = this.getPrice(menu_price, peopleSelector, menuIndex, 0)
 
     this.setData({
-      menuIndex: options.menuIndex,
+      menuIndex: menuIndex,
       chef,
       menus: chef.menus,
       menuSelector,

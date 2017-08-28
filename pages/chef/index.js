@@ -5,7 +5,7 @@ var WebIM = WebIM.default
 
 var app = getApp()
 var menu_card = require('../../components/menu_card/index.js')
-var menu_card = require('../../components/comment_card/comment_card.js')
+// var menu_card = require('../../components/comment_card/comment_card.js')
 
 Page({
 
@@ -47,7 +47,9 @@ Page({
       url: '../im/chatroom/chatroom?username=' + JSON.stringify(nameList)
     })
   },
+
   booking: menu_card.booking,
+
   /**
    * 生命周期函数--监听页面加载
    */

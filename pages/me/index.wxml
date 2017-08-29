@@ -21,12 +21,15 @@
             </view>
             <view class="weui-cell__ft weui-cell__ft_in-access"></view>
           </navigator>
-          <navigator class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+
+          <!-- this part is not finish -->
+          <!-- <navigator class="weui-cell weui-cell_access" hover-class="weui-cell_active">
             <view class="weui-cell__bd weui-cell_primary">
               <view>我的收藏</view>
             </view>
             <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-          </navigator>
+          </navigator> -->
+          
           <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
             <view class="weui-cell__bd weui-cell_primary">
               <view>用户反馈</view>
@@ -41,7 +44,7 @@
     <view class="weui-panel__bd">
       <view class="weui-media-box weui-media-box_small-appmsg">
         <view class="option-item weui-cells weui-cells_in-small-appmsg">
-          <navigator url="/pages/me/bindphone/index" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <navigator hidden="{{is_phone_bound===true}}" url="/pages/me/bindphone/index" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
             <view class="weui-cell__bd weui-cell_primary">
               <view>绑定手机</view>
             </view>

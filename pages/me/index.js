@@ -93,17 +93,20 @@ Page({
           })
         }
       },
-      {
-        isError: true,
-        func: function () {
-          _this.setData({
-            isLogin: false
-          })
-        }
-      }
     ]
     // 检查是否登录
     app.checkLogin(callback)
+
+    // 检查是否绑定手机
+    if (app.globalData.is_phone_bound) {
+     this.setData({
+       is_phone_bound: true
+     })
+    }else{
+      this.setData({
+        is_phone_bound: false
+      })
+    }
   },
 
   /**

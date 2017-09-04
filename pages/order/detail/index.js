@@ -16,6 +16,107 @@ Page({
         if (!res.cancel) {
           if (res.tapIndex == 0) {
             // 付款
+            var token = app.globalData.token
+            wx.request({
+              url: app.globalData.baseurl + 'booking/get-outtradeno?bookingid=' + order_id,
+              header: {
+                token: token
+              },
+              success(res) {
+                if (app.globalData.showError && res.statusCode != '200') {
+                  var errorMsg
+                  if (res.data.error_msg) {
+                    errorMsg = res.data.error_msg
+                  } else {
+                    errorMsg = '未知错误'
+                  }
+                  errorMsg += res.statusCode
+                  app.showError(errorMsg)
+                  return
+                }
+                const outTradeNo = res.data.result.out_trade_no
+                console.log(res.data.result.out_trade_no)
+
+                wx.request({
+                  url: app.globalData.baseurl + 'wechat/unified-order',
+                  method: 'post',
+                  header: {
+                    token: token
+                  },
+                  data: {
+                    'order': res.data.result.out_trade_no
+                  },
+                  success(res) {
+                    if (app.globalData.showError && res.statusCode != '200') {
+                      var errorMsg
+                      if (res.data.error_msg) {
+                        errorMsg = res.data.error_msg
+                      } else {
+                        errorMsg = '未知错误'
+                      }
+                      errorMsg += res.statusCode
+                      app.showError(errorMsg)
+                      return
+                    }
+                    console.log(res.data.result)
+                    wx.requestPayment({
+                      'timeStamp': String(res.data.result.timeStamp),
+                      'nonceStr': res.data.result.nonceStr,
+                      'package': res.data.result.package,
+                      'signType': res.data.result.signType,
+                      'paySign': res.data.result.sign,
+                      'success': function (res) {
+
+                        wx.request({
+                          url: app.globalData.baseurl + 'wechat/get-order-status?order=' + outTradeNo,
+                          header: {
+                            token: token
+                          },
+                          success(res){
+                            if (app.globalData.showError && res.statusCode != '200') {
+                              var errorMsg
+                              if (res.data.error_msg) {
+                                errorMsg = res.data.error_msg
+                              } else {
+                                errorMsg = '未知错误'
+                              }
+                              errorMsg += res.statusCode
+                              app.showError(errorMsg)
+                              return
+                            }
+
+                            if (res.data.result.paid == 0)
+                            {
+                              app.showError('支付未成功，请到订单页面确认')
+                            }
+                            else{
+                              wx.showModal({
+                                title: '支付成功',
+                                content: '家厨将尽快确认您的订单',
+                                showCancel: false,
+                                success: function (res) {
+                                  // if (res.confirm) {
+                                  //   console.log('用户点击确定')
+                                  // } else if (res.cancel) {
+                                  //   console.log('用户点击取消')
+                                  // }
+                                }
+                              })
+                            }
+                          }
+                        })
+
+                      },
+                      'fail': function (res) {
+                        console.log('failed', res)
+                        app.showError(res.errMsg)
+                      }
+                    })
+                  }
+                })
+
+              }
+            })
           } else if (res.tapIndex == 1) {
             // 联系私厨
           } else if (res.tapIndex == 2) {

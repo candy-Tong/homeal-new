@@ -57,10 +57,7 @@
         <block wx:for="{{chef.menus}}" wx:key="{{index}}">
           <template is="menu_card" data="{{...item,index}}"></template>
         </block>
-        <view catchtap='booking' class='booking'>预约</view>
       </view>
-
-
 
       <view class="" hidden="{{activeIndex != 1}}">
         <view class="page__bd">
@@ -93,4 +90,12 @@
       </view>
     </view>
   </view>
+</view>
+
+<view class="sticky-footer">
+  <view class="icon">
+    <view bindtap="into_room" class="chat-icon"></view>
+    <view bindtap="into_room" class="favor-text">私信</view>
+  </view>
+  <view catchtap='booking' class='booking-sticky'>预约</view>
 </view>

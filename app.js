@@ -590,7 +590,7 @@ App({
   globalData: {
     // showError为true时，网络请求非200会弹框报错
     showError: true,
-    baseurl: 'http://39.108.117.116/api/',
+    baseurl: 'https://api.homeal.imhey.com.cn/api/',
     //baseurl: 'http://api.homeal.dev:8888/api/',
     // staticResUrl:"http://119.29.162.17/homeal/icon/",
     userInfo: null,

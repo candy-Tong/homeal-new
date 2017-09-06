@@ -37,6 +37,9 @@ Page({
             })
             if (app.globalData.is_phone_bound) {
               // 已绑定手机
+              _this.setData({
+                is_phone_bound: app.globalData.is_phone_bound
+              })
               // 个人界面无操作
             } else {
               // 未绑定手机

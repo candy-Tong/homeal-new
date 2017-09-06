@@ -1,23 +1,23 @@
 <!--pages/order/detail/index.wxml-->
 
-<view  class="weui-panel">
+<view class="weui-panel">
   <view id="{{order.chef_id}}" bindtap="goChef" class="weui-panel__bd">
     <view class="weui-media-box weui-media-box_small-appmsg">
       <view class="weui-cells weui-cells_in-small-appmsg">
-        <view  url="{{'/pages/chef/index?chef_id='+order.chef_id}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view url="{{'/pages/chef/index?chef_id='+order.chef_id}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
           <view class="avatar-wrapper">
-            <image  mode="aspectFill" class="chef_avatar" src="{{order.chef_avatar_url}}" style="width: 22px;height: 22px;margin-right: 5px" mode="aspectFill"/>
+            <image mode="aspectFill" class="chef_avatar" src="{{order.chef_avatar_url}}" style="width: 22px;height: 22px;margin-right: 5px" mode="aspectFill" />
           </view>
           <view class="weui-cell__bd weui-cell_primary">
             <view>{{order.kitchen_name}}</view>
           </view>
-        </view >
+        </view>
       </view>
     </view>
   </view>
 
-  <view  class="weui-panel__bd">
-    <view  class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+  <view class="weui-panel__bd">
+    <view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
       <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
         <image mode="aspectFill" class="weui-media-box__thumb" src="{{order.menus[0].menu_photo_url}}" />
       </view>
@@ -28,9 +28,9 @@
 
         <view class="weui-media-box__desc">{{order.menus[0].menu_desc}}</view>
       </view>
-    </view >
+    </view>
   </view>
-  <view id="{{order.chef_id}}" bindtap="goChef"  class="weui-panel__ft">
+  <view id="{{order.chef_id}}" bindtap="goChef" class="weui-panel__ft">
     <view class="weui-cell weui-cell_access weui-cell_link">
       <view class="weui-cell__bd">查看详情</view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
@@ -73,7 +73,15 @@
     </view>
     <view class="order-item weui-form-preview__item">
       <view class="order_label">状态</view>
-      <view class="order_value">未付款</view>
+      <view class="order_value">
+        <text wx:if="{{order.booking_status==1}}">待付款</text>
+        <text wx:if="{{order.booking_status==2}}">待接单</text>
+        <text wx:if="{{order.booking_status==3}}">已接单</text>
+        <text wx:if="{{order.booking_status==4}}">被拒绝</text>
+        <text wx:if="{{order.booking_status==5}}">已取消</text>
+        <text wx:if="{{order.booking_status==6}}">已取消</text>
+        <text wx:if="{{order.booking_status==7}}">已完成</text>
+      </view>
     </view>
     <view class="order-item weui-form-preview__item">
       <view class="order_label">下单时间</view>

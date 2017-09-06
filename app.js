@@ -57,7 +57,7 @@ App({
           pages[0].onShow()
         }
       },
-      onReceivedMessage: function(message) {
+      onReceivedMessage: function (message) {
         console.log("***** onReceivedMessage *****")
       },
       onVideoMessage: function (message) {
@@ -145,7 +145,7 @@ App({
       onTextMessage: function (message) {
         console.log("***** onTextMessage *****")
         var page = that.getRoomPage()
-        console.log("onTextMessage: " , page)
+        console.log("onTextMessage: ", page)
         if (message) {
           if (page) {
             page.receiveMsg(message, 'txt')
@@ -402,7 +402,7 @@ App({
                 _this.showError(errorMsg)
                 return
               }
-              
+
               console.log("2.登陆返回")
               console.log(res.data)
               //更新数据
@@ -505,7 +505,7 @@ App({
     if (isLogin && isLogin == true) {
       //已登录
       console.log("已登录，回调开始")
-      
+
       if (typeof callBackObject == 'object') {
         callBackObject.forEach(function (item, index, object) {
           if (item.func && (item.isError == undefined || item.isError != true)) {
@@ -551,6 +551,100 @@ App({
     return token
   },
 
+  payMoney(order_id,callback) {
+    var that=this
+    var token = that.globalData.token
+    wx.request({
+      url: that.globalData.baseurl + 'booking/get-outtradeno?bookingid=' + order_id,
+      header: {
+        token: token
+      },
+      success(res) {
+        if (that.globalData.showError && res.statusCode != '200') {
+          var errorMsg
+          if (res.data.error_msg) {
+            errorMsg = res.data.error_msg
+          } else {
+            errorMsg = '未知错误'
+          }
+          errorMsg += res.statusCode
+          that.showError(errorMsg)
+          return
+        }
+        const outTradeNo = res.data.result.out_trade_no
+        console.log(res.data.result.out_trade_no)
+
+        wx.request({
+          url: that.globalData.baseurl + 'wechat/unified-order',
+          method: 'post',
+          header: {
+            token: token
+          },
+          data: {
+            'order': res.data.result.out_trade_no
+          },
+          success(res) {
+            if (that.globalData.showError && res.statusCode != '200') {
+              var errorMsg
+              if (res.data.error_msg) {
+                errorMsg = res.data.error_msg
+              } else {
+                errorMsg = '未知错误'
+              }
+              errorMsg += res.statusCode
+              that.showError(errorMsg)
+              return
+            }
+            console.log(res.data.result)
+            wx.requestPayment({
+              'timeStamp': String(res.data.result.timeStamp),
+              'nonceStr': res.data.result.nonceStr,
+              'package': res.data.result.package,
+              'signType': res.data.result.signType,
+              'paySign': res.data.result.sign,
+              'success': function (res) {
+
+                wx.request({
+                  url: that.globalData.baseurl + 'wechat/get-order-status?order=' + outTradeNo,
+                  header: {
+                    token: token
+                  },
+                  success(res) {
+                    if (that.globalData.showError && res.statusCode != '200') {
+                      var errorMsg
+                      if (res.data.error_msg) {
+                        errorMsg = res.data.error_msg
+                      } else {
+                        errorMsg = '未知错误'
+                      }
+                      errorMsg += res.statusCode
+                      that.showError(errorMsg)
+                      return
+                    }
+                    if (res.data.result.paid == 0) {
+                      that.showError('支付未成功，请到订单页面确认')
+                    }
+                    else {
+                      if (callback) {
+                        callback()
+                      }
+                    }
+                  }
+                })
+
+              },
+              'fail': function (res) {
+                console.log('failed', res)
+                that.showError(res.errMsg)
+              }
+            })
+          }
+        })
+
+      }
+    })
+  },
+
   contains: function (arr, obj) {
     var i = arr.length;
     while (i--) {
@@ -575,8 +669,8 @@ App({
       }
     })
   },
-  
-  loginEasemob: function(username, password) {
+
+  loginEasemob: function (username, password) {
     var options = {
       apiUrl: WebIM.config.apiURL,
       user: username,

@@ -38,6 +38,8 @@ Page({
   into_room: function (event) {
     var that = this
     console.log(that.data.chef)
+    // test 
+    that.data.chef.easemob_username='111'
     WebIM.conn.addRoster({ 'name': that.data.chef.easemob_username})
     var nameList = {
       myName: wx.getStorageSync('easemobUsername'),

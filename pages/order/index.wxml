@@ -15,7 +15,7 @@
     </view>
     <view class="weui-tab__panel">
 
-      <!-- 1st page -->
+      <!-- 待付款 -->
       <view class="" hidden="{{activeIndex != 0}}">
         <block wx:if="{{isLogin}}">
           <block wx:for="{{order}}" wx:key="{{index}}">
@@ -38,10 +38,11 @@
         </block>
       </view>
 
+      <!-- 进行中 -->
       <view class="" hidden="{{activeIndex != 1}}">
         <block wx:if="{{isLogin}}">
           <block wx:for="{{order}}" wx:key="{{index}}">
-            <block wx:if="{{item.booking_status==2}}">
+            <block wx:if="{{item.booking_status==2||item.booking_status==3}}">
               <template is="order_card" data="{{...item,index:index}}"></template>
             </block>
           </block>
@@ -60,10 +61,13 @@
         </block>
       </view>
 
+      <!-- 历史订单 -->
       <view class="" hidden="{{activeIndex != 2}}">
         <block wx:if="{{isLogin}}">
           <block wx:for="{{order}}" wx:key="{{index}}">
-            <template is="order_card" data="{{...item,index:index}}"></template>
+            <block wx:if="{{item.booking_status==4||item.booking_status==5||item.booking_status==6||item.booking_status==7}}">
+              <template is="order_card" data="{{...item,index:index}}"></template>
+            </block>
           </block>
         </block>
         <block wx:else>

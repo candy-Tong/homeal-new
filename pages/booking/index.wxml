@@ -73,7 +73,7 @@
     <view class="weui-cell">
       <view class="weui-cell__bd">
         <textarea bindinput="bindNoticeInput" cursor-spacing="30" class="weui-textarea" placeholder="（如果您有其他要求，可以通过备注告诉私厨，最多50字）" style="height: 3.3em" />
-        <view class="weui-textarea-counter">0/50</view>
+        <view class="weui-textarea-counter">{{booking_notice.length}}/50</view>
       </view>
     </view>
   </view>

@@ -1,4 +1,5 @@
 // pages/order/submit/index.js
+var app=getApp()
 Page({
 
   /**
@@ -6,6 +7,13 @@ Page({
    */
   data: {
 
+  },
+
+  payMoney(){
+    var that=this
+    app.payMoney(this.order_id,function(){
+      that.seeOrder()
+    })
   },
 
   seeOrder() {

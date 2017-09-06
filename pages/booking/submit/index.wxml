@@ -13,12 +13,20 @@
     <view class="weui-msg__opr-area">
       <view class="weui-btn-area">
 
-        <button bindtap="seeOrder" class="see_order weui-btn" type="warn">
+        <!-- <button bindtap="seeOrder" class="see_order weui-btn" type="warn">
           查看订单
         </button>
 
         <button bindtap="back" class="weui-btn" type="default">
           返回首页
+        </button> -->
+
+        <button bindtap="payMoney"  class="see_order weui-btn" type="warn">
+          立即付款
+        </button>
+
+        <button bindtap="seeOrder" class="weui-btn" type="default">
+          查看订单
         </button>
 
       </view>

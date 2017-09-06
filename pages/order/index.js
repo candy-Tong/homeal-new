@@ -20,6 +20,7 @@ Page({
     });
   },
 
+  
 
   handelLogin: function (e) {
     wx.showLoading({
@@ -29,42 +30,11 @@ Page({
   },
 
 
-  deleteOrder(e) {
-
-  },
+  payMoney: order_card.payMoney,
 
   contactWithChef: order_card.contactWithChef,
 
   seeOrder: order_card.seeOrder,
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    // var _this = this
-    // var callback = [
-    //   {
-    //     func: function () {
-    //       _this.setData({
-    //         isLogin: true
-    //       })
-    //       _this.getOrder()
-    //     }
-    //   },
-    //   {
-    //     isError: true,
-    //     func: function () {
-    //       _this.setData({
-    //         isLogin: false
-    //       })
-    //     }
-    //   }
-    // ]
-    // // 检查是否登录
-    // app.checkLogin(callback)
-
-
-  },
 
   getOrder() {
     var _this = this
@@ -160,23 +130,30 @@ Page({
   },
 
   /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    // 检查是否登录
+    
+
+
+  },
+
+  /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
 
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-    if (app.globalData.refalshLogin) {
-      // 在其他页面登录，需要刷新界面
-      _this.setData({
-        isLogin: true
-      })
-      _this.getOrder()
-    }
+  refreshOrder(){
+    // if (app.globalData.refalshLogin) {
+    //   // 在其他页面登录，需要刷新界面
+    //   _this.setData({
+    //     isLogin: true
+    //   })
+    //   _this.getOrder()
+    // }
 
     var _this = this
     var callback = [
@@ -198,8 +175,14 @@ Page({
         }
       }
     ]
-    // 检查是否登录
     app.checkLogin(callback)
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    this.refreshOrder()
 
   },
 

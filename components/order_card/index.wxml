@@ -36,7 +36,7 @@
     <view class="weui-form-preview__ft">
     <block wx:if="{{booking_status==1}}">
         <navigator url="{{'/pages/order/delete/index?order_id='+booking_id}}" class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active">取消订单</navigator>
-        <view bindtap='contactWithChef' class="weui-form-preview__btn primary_button" hover-class="weui-form-preview__btn_active">付款</view>
+        <view bindtap='payMoney' data-order-id="{{booking_id}}" class="weui-form-preview__btn primary_button" hover-class="weui-form-preview__btn_active">付款</view>
       </block>
       <block wx:if="{{booking_status==2}}">
         <navigator url="{{'/pages/order/delete/index?order_id='+booking_id}}" class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active">取消订单</navigator>

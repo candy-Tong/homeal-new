@@ -82,6 +82,7 @@ Page({
     var userinfo = e.detail
     if (userinfo.errMsg && userinfo.errMsg.indexOf('fail') > 0) {
       console.log("无法获取用户userInfo")
+      console.log(userinfo.errMsg)
     } else if (userinfo.errMsg && userinfo.errMsg.indexOf('ok') > 0) {
       // 配置回调函数
       var callback = [

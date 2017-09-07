@@ -1,6 +1,7 @@
 require('../../utils/strophe.js')
 var WebIM = require('../../utils/WebIM.js').default
 var app = getApp()
+
 function seeOrder(e) {
   console.log(e.currentTarget.id)
   var index = e.currentTarget.id
@@ -14,26 +15,15 @@ function seeOrder(e) {
 // 联系私厨
 function contactWithChef(e) {
   var that = this
-  var options = {
-    apiUrl: WebIM.config.apiURL,
-    user: '29837123984',
-    pwd: '29837123984',
-    grant_type: 'password',
-    appKey: WebIM.config.appkey
+  console.log(e.currentTarget.dataset.easemobUsername)
+  WebIM.conn.addRoster({ 'name': e.currentTarget.dataset.easemobUsername })
+  var nameList = {
+    myName: wx.getStorageSync('easemobUsername'),
+    your: e.currentTarget.dataset.easemobUsername
   }
-  wx.setStorage({
-    key: "myUsername",
-    data: '29837123984'
+  wx.navigateTo({
+    url: '../im/chatroom/chatroom?username=' + JSON.stringify(nameList)
   })
-  //console.log('open')
-  WebIM.conn.open(options, function (userId) {
-    setTimeout(function () {
-      wx.redirectTo({
-        url: '/pages/im/main/main?myName=' + userId
-      })
-    }, 1000);
-  })
-
 }
 
 function payMoney(e) {

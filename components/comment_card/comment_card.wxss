@@ -9,10 +9,34 @@
   display: -webkit-flex;
   display: flex;
 }
-.comment-title{
-  color:#e64340;
+.comment{
+  margin-bottom: 7rpx;
+}
+
+.user_avatar {
+  margin-right: 14rpx;
+  width: 120rpx;
+  height: 120rpx;
+  line-height: 120rpx;
+  text-align: center;
+}
+
+.comment-title {
+  color: #e64340;
   margin-bottom: 5px;
 }
-.comment-img-box{
-  padding: 15px
+
+.img-box {
+  overflow: hidden;
+}
+
+.comment_img_box {
+  float: left;
+  margin-right: 18Rpx;
+  margin-bottom: 18Rpx;
+}
+
+.comment_img {
+  width: 158rpx;
+  height: 158rpx;
 }

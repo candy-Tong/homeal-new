@@ -38,8 +38,7 @@ Page({
   into_room: function (event) {
     var that = this
     console.log(that.data.chef)
-    // test 
-    that.data.chef.easemob_username='111'
+    
     WebIM.conn.addRoster({ 'name': that.data.chef.easemob_username})
     var nameList = {
       myName: wx.getStorageSync('easemobUsername'),
@@ -81,8 +80,28 @@ Page({
           app.showError(errorMsg)
           return
         }
+        var chef =res.data.result
+        chef.comments=[
+          {
+            avatar_url:"http://img95.699pic.com/photo/00039/2516.jpg_wh300.jpg!/format/webp",
+            name:"匿名用户",
+            comment:"味道很好~主人也很不错哦",
+            comment_img:[
+              "http://img95.699pic.com/photo/00010/2554.jpg_wh300.jpg!/format/webp"
+            ]
+          },
+          {
+            avatar_url: "http://img95.699pic.com/photo/00039/2516.jpg_wh300.jpg!/format/webp",
+            name: "匿名用户",
+            comment: "味道很好~主人也很不错哦",
+            comment_img: [
+              "http://img95.699pic.com/photo/00010/2554.jpg_wh300.jpg!/format/webp"
+            ]
+          }
+        ]
+          
         _this.setData({
-          chef: res.data.result,
+          chef,
           chef_id
         })
       }

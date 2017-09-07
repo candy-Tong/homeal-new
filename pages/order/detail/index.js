@@ -1,5 +1,9 @@
 // pages/order/detail/index.js
 var app = getApp()
+var WebIM = require('../../../utils/WebIM.js')
+var WebIM = WebIM.default
+
+
 Page({
 
   /**
@@ -8,46 +12,74 @@ Page({
   data: {
   },
 
+  contactWithChef(){
+    var that = this
+    console.log(that.data.order)
+    console.log(that.data.order.easemob_username)
+    WebIM.conn.addRoster({ 'name': that.data.order.easemob_username })
+    var nameList = {
+      myName: wx.getStorageSync('easemobUsername'),
+      your: that.data.order.easemob_username
+    }
+    wx.navigateTo({
+      url: '../../im/chatroom/chatroom?username=' + JSON.stringify(nameList)
+    })
+  },
+  payMoney(){
+    // 付款
+    var order_id = this.order_id
+    app.payMoney(order_id, function () {
+      wx.showModal({
+        title: '支付成功',
+        content: '家厨将尽快确认您的订单',
+        showCancel: false,
+        success: function (res) {
+          // if (res.confirm) {
+          //   console.log('用户点击确定')
+          // } else if (res.cancel) {
+          //   console.log('用户点击取消')
+          // }
+        }
+      })
+    })
+  },
+  cancelOrder(){
+    var order_id = this.order_id
+    // 取消订单
+    wx.navigateTo({
+      url: '/pages/order/delete/index?order_id=' + order_id,
+    })
+  },
+
+
   open: function () {
     var order_id = this.order_id
     var itemList=[]
+    var funcList=[]
     if(this.data.order.booking_status==1){
       itemList.push('付款')
+      funcList.push(this.payMoney)
     }
     itemList.push('联系私厨')
     itemList.push('取消订单')
+    funcList.push(this.contactWithChef)
+    funcList.push(this.cancelOrder)
     wx.showActionSheet({
       itemList,
       success: function (res) {
         if (!res.cancel) {
-          if (res.tapIndex == 0) {
-            // 付款
-            app.payMoney(order_id,function(){
-              wx.showModal({
-                title: '支付成功',
-                content: '家厨将尽快确认您的订单',
-                showCancel: false,
-                success: function (res) {
-                  // if (res.confirm) {
-                  //   console.log('用户点击确定')
-                  // } else if (res.cancel) {
-                  //   console.log('用户点击取消')
-                  // }
-                }
-              })
-            })
+          // if (res.tapIndex == 0) {
+          //   funcList[res.tapIndex].call()
             
-          } else if (res.tapIndex == 1) {
-            // 联系私厨
-          } else if (res.tapIndex == 2) {
-            // 取消订单
-
-            wx.navigateTo({
-              url: '/pages/order/delete/index?order_id=' + order_id,
-            })
-          } else {
-            console.log("ActionSheet发生错误，位置tapIndex")
-          }
+          // } else if (res.tapIndex == 1) {
+          //   // 联系私厨
+          //   funcList[res.tapIndex].call()
+          // } else if (res.tapIndex == 2) {
+           
+          // } else {
+          //   console.log("ActionSheet发生错误，位置tapIndex")
+          // }
+          funcList[res.tapIndex].call()
         }
       }
     });
@@ -66,7 +98,23 @@ Page({
   onLoad: function (options) {
     var _this = this
     console.log(options.order_id)
-    var order_id = options.order_id
+    this.order_id = options.order_id
+    
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    var _this = this
+    var order_id = this.order_id
     var token = app.globalData.token
     wx.request({
       url: app.globalData.baseurl + 'booking/' + order_id,
@@ -92,20 +140,6 @@ Page({
       }
     })
     this.order_id = order_id
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
   },
 
   /**

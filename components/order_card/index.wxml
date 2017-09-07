@@ -40,7 +40,7 @@
       </block>
       <block wx:if="{{booking_status==2}}">
         <navigator url="{{'/pages/order/delete/index?order_id='+booking_id}}" class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active">取消订单</navigator>
-        <view bindtap='contactWithChef' class="weui-form-preview__btn primary_button" hover-class="weui-form-preview__btn_active">联系私厨</view>
+        <view bindtap='contactWithChef' data-easemob-username="{{easemob_username}}" class="weui-form-preview__btn primary_button" hover-class="weui-form-preview__btn_active">联系私厨</view>
       </block>
       <block wx:if="{{booking_status==3}}">
         <view bindtap='contactWithChef' class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active">联系私厨</view>

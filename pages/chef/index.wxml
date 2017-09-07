@@ -16,7 +16,7 @@
   <view class="weui-panel__bd">
     <view class="weui-media-box  chef">
       <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-        <image class="weui-media-box__thumb avatar" src="{{chef.chef_avatar_url}}" />
+        <image mode="aspectFill" class="weui-media-box__thumb avatar" src="{{chef.chef_avatar_url}}" />
       </view>
       <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
         <view class="weui-media-box__title">
@@ -29,7 +29,7 @@
           </view>
         </view>
 
-        <view class="desc">{{chef.chef_brief}}{{chef.chef_brief}}{{chef.chef_brief}}</view>
+        <view class="desc">{{chef.chef_brief}}</view>
         <view class="label weui-media-box_text weui-media-box__info">
           <view class="weui-media-box__info__meta">{{chef.chef_tag}}</view>
         </view>
@@ -62,31 +62,31 @@
       <view class="" hidden="{{activeIndex != 1}}">
         <view class="page__bd">
           <view class="weui-article">
-            <view class="weui-article__h1 chef_name">店铺名称</view>
+            <!-- <view class="weui-article__h1 chef_name">店铺名称</view> -->
             <view class="weui-article__section">
               <view class="weui-article__title">简介</view>
               <view class="weui-article__section">
                 <view class="weui-article__p">
-                  作为一名名声在外的台湾人，梁文道先生的基本素养一定是有的。而且作为70年代出生的香港人，后转入台湾，他在青少年时期完整的经历和见识了中国历史上最深刻的变革之一，这对他们的人生认知非常有帮助。 从廖信忠到梁文道，这一代台湾人似乎统统喜欢由细节说起：要么是抻出一条血淋淋的事实给你；要么就是拎着个头儿往外拽，扯出一轱辘给你讲一轱辘的故事。而且他们是有细节洁癖的，很难忍受李敖那种不懂装懂其喜黑服的原因大抵在此。
+                  {{chef.chef_brief}}
                 </view>
 
               </view>
-              <view class="weui-article__title">章标题</view>
+              <!-- <view class="weui-article__title">章标题</view>
               <view class="weui-article__section">
                 <view class="weui-article__p">
                   作为一名名声在外的台湾人，梁文道先生的基本素养一定是有的。而且作为70年代出生的香港人，后转入台湾，他在青少年时期完整的经历和见识了中国历史上最深刻的变革之一，这对他们的人生认知非常有帮助。 从廖信忠到梁文道，这一代台湾人似乎统统喜欢由细节说起：要么是抻出一条血淋淋的事实给你；要么就是拎着个头儿往外拽，扯出一轱辘给你讲一轱辘的故事。而且他们是有细节洁癖的，很难忍受李敖那种不懂装懂其喜黑服的原因大抵在此。
                 </view>
 
-              </view>
+              </view> -->
             </view>
           </view>
         </view>
 
       </view>
       <view class="" hidden="{{activeIndex != 2}}">
-        <template is="comment_card" ></template>
-        <template is="comment_card" ></template>
-        <template is="comment_card" ></template>      
+        <block wx:for="{{chef.comments}}" wx:key="{{index}}">
+          <template is="comment_card" data="{{...item,index}}"></template>
+        </block>
       </view>
     </view>
   </view>

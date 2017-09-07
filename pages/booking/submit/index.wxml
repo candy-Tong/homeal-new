@@ -5,9 +5,9 @@
       <icon color="#E64340" type="success" size="93"></icon>
     </view>
     <view class="weui-msg__text-area">
-      <view class="weui-msg__title">预约成功</view>
-      <view class="weui-msg__desc">内容详情，可根据实际需要安排，如果换行则不超过规定长度，居中展现
-        <navigator url="/pages/order/detail/index" class="weui-msg__link">文字链接</navigator>
+      <view class="weui-msg__title">成功生成订单</view>
+      <view class="weui-msg__desc">立即付款，完成下单
+        <!-- <navigator url="/pages/order/detail/index" class="weui-msg__link">文字链接</navigator> -->
       </view>
     </view>
     <view class="weui-msg__opr-area">
